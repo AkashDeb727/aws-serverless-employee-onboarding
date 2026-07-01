@@ -1,0 +1,1175 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- FIX SEC-2: Content Security Policy -->
+    <title>AWS Smart Employee Onboarding – Sign In</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --primary: #2563eb;
+        --primary-dark: #1d4ed8;
+        --primary-light: #eff6ff;
+        --navy: #1e293b;
+        --bg: #f8fafc;
+        --white: #ffffff;
+        --text: #0f172a;
+        --muted: #64748b;
+        --border: #e2e8f0;
+        --success: #16a34a;
+        --error: #dc2626;
+        --radius: 10px;
+      }
+
+      html,
+      body {
+        height: 100%;
+        font-family: "Inter", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+      }
+
+      .page {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      /* ── LEFT PANEL ── */
+      .left-panel {
+        flex: 1;
+        background: var(--navy);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 60px 56px;
+        position: relative;
+        overflow: hidden;
+      }
+      .left-panel::before {
+        content: "";
+        position: absolute;
+        top: -120px;
+        right: -120px;
+        width: 420px;
+        height: 420px;
+        border-radius: 50%;
+        background: rgba(37, 99, 235, 0.12);
+        pointer-events: none;
+      }
+      .left-panel::after {
+        content: "";
+        position: absolute;
+        bottom: -80px;
+        left: -80px;
+        width: 280px;
+        height: 280px;
+        border-radius: 50%;
+        background: rgba(37, 99, 235, 0.08);
+        pointer-events: none;
+      }
+
+      .brand-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(37, 99, 235, 0.2);
+        border: 1px solid rgba(37, 99, 235, 0.35);
+        border-radius: 6px;
+        padding: 6px 12px;
+        margin-bottom: 32px;
+        width: fit-content;
+      }
+      .brand-badge i {
+        color: #60a5fa;
+        font-size: 13px;
+      }
+      .brand-badge span {
+        color: #93c5fd;
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+      }
+
+      .left-title {
+        font-size: 34px;
+        font-weight: 700;
+        color: #ffffff;
+        line-height: 1.25;
+        margin-bottom: 16px;
+        letter-spacing: -0.5px;
+      }
+      .left-title span {
+        color: #60a5fa;
+      }
+
+      .left-desc {
+        font-size: 15px;
+        color: #94a3b8;
+        line-height: 1.7;
+        margin-bottom: 48px;
+        max-width: 360px;
+      }
+
+      .feature-cards {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .feature-card {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: var(--radius);
+        padding: 16px 20px;
+      }
+      .feature-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 8px;
+        background: rgba(37, 99, 235, 0.25);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .feature-icon i {
+        color: #60a5fa;
+        font-size: 15px;
+      }
+      .feature-text h4 {
+        color: #f1f5f9;
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 3px;
+      }
+      .feature-text p {
+        color: #64748b;
+        font-size: 12.5px;
+        line-height: 1.5;
+      }
+
+      /* ── RIGHT PANEL ── */
+      .right-panel {
+        width: 460px;
+        background: var(--white);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 48px 40px;
+      }
+      .login-box {
+        width: 100%;
+        max-width: 360px;
+      }
+      .login-header {
+        margin-bottom: 32px;
+      }
+      .login-header h2 {
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 6px;
+      }
+      .login-header p {
+        font-size: 14px;
+        color: var(--muted);
+      }
+
+      .form-group {
+        margin-bottom: 18px;
+      }
+      .form-group label {
+        display: block;
+        font-size: 13px;
+        font-weight: 500;
+        color: #374151;
+        margin-bottom: 7px;
+      }
+
+      .input-wrap {
+        position: relative;
+      }
+      .input-wrap i.field-icon {
+        position: absolute;
+        left: 13px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #94a3b8;
+        font-size: 14px;
+        pointer-events: none;
+      }
+      .input-wrap .toggle-pw {
+        position: absolute;
+        right: 13px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        font-size: 14px;
+        color: #94a3b8;
+        transition: color 0.2s;
+      }
+      .input-wrap .toggle-pw:hover {
+        color: var(--primary);
+      }
+
+      input[type="email"],
+      input[type="password"],
+      input[type="text"] {
+        width: 100%;
+        padding: 10px 14px 10px 38px;
+        border: 1.5px solid var(--border);
+        border-radius: var(--radius);
+        font-family: "Inter", sans-serif;
+        font-size: 14px;
+        color: var(--text);
+        background: var(--bg);
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
+        outline: none;
+      }
+      input:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        background: var(--white);
+      }
+
+      .btn-primary {
+        width: 100%;
+        padding: 11px;
+        background: var(--primary);
+        color: #fff;
+        border: none;
+        border-radius: var(--radius);
+        font-family: "Inter", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          transform 0.1s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        margin-bottom: 0;
+      }
+      .btn-primary:hover:not(:disabled) {
+        background: var(--primary-dark);
+      }
+      .btn-primary:active:not(:disabled) {
+        transform: scale(0.99);
+      }
+      .btn-primary:disabled {
+        opacity: 0.65;
+        cursor: not-allowed;
+      }
+
+      .spinner {
+        width: 16px;
+        height: 16px;
+        border: 2px solid rgba(255, 255, 255, 0.4);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+        display: none;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .login-footer {
+        margin-top: 32px;
+        text-align: center;
+        padding-top: 24px;
+        border-top: 1px solid var(--border);
+      }
+      .login-footer p {
+        font-size: 12px;
+        color: #94a3b8;
+      }
+      .login-footer span {
+        color: #ff9900;
+        font-weight: 600;
+      }
+
+      /* ── TOAST ── */
+      #toast-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      /* FIX FI-3: aria-live for screen readers set on element in HTML */
+      .toast {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 18px;
+        border-radius: 8px;
+        font-size: 13.5px;
+        font-weight: 500;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        animation: slideIn 0.3s ease;
+        min-width: 280px;
+      }
+      .toast.success {
+        background: #dcfce7;
+        color: #15803d;
+        border-left: 4px solid #16a34a;
+      }
+      .toast.error {
+        background: #fee2e2;
+        color: #b91c1c;
+        border-left: 4px solid #dc2626;
+      }
+      .toast.info {
+        background: #dbeafe;
+        color: #1d4ed8;
+        border-left: 4px solid #2563eb;
+      }
+      .toast.warning {
+        background: #fef9c3;
+        color: #92400e;
+        border-left: 4px solid #d97706;
+      }
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateX(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      @keyframes fadeOut {
+        to {
+          opacity: 0;
+          transform: translateX(20px);
+        }
+      }
+
+      .error-msg {
+        font-size: 12px;
+        color: var(--error);
+        margin-top: 5px;
+        display: none;
+      }
+
+      @media (max-width: 768px) {
+        .left-panel {
+          display: none;
+        }
+        .right-panel {
+          width: 100%;
+          padding: 40px 24px;
+        }
+      }
+
+      /* ── NEW PASSWORD MODAL ── */
+      .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.55);
+        backdrop-filter: blur(3px);
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        opacity: 0;
+        pointer-events: none; /* FIX L-7: was 'all' which is non-standard */
+        transition: opacity 0.25s ease;
+      }
+      .modal-overlay.active {
+        opacity: 1;
+        pointer-events: auto; /* FIX L-7: correct standard value */
+      }
+      .modal {
+        background: var(--white);
+        border-radius: 14px;
+        padding: 36px 36px 32px;
+        width: 100%;
+        max-width: 420px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        transform: translateY(12px) scale(0.98);
+        transition: transform 0.25s ease;
+      }
+      .modal-overlay.active .modal {
+        transform: translateY(0) scale(1);
+      }
+
+      .modal-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        background: var(--primary-light);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+      }
+      .modal-icon i {
+        color: var(--primary);
+        font-size: 20px;
+      }
+      .modal h3 {
+        font-size: 19px;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 6px;
+      }
+      .modal .modal-subtitle {
+        font-size: 13.5px;
+        color: var(--muted);
+        margin-bottom: 28px;
+        line-height: 1.55;
+      }
+      .modal .form-group {
+        margin-bottom: 16px;
+      }
+
+      .strength-bar-wrap {
+        margin-top: 8px;
+        display: flex;
+        gap: 4px;
+      }
+      .strength-segment {
+        height: 4px;
+        flex: 1;
+        border-radius: 2px;
+        background: var(--border);
+        transition: background 0.3s;
+      }
+
+      .pw-rules {
+        margin-top: 10px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 5px 12px;
+      }
+      .pw-rule {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11.5px;
+        color: var(--muted);
+        transition: color 0.2s;
+      }
+      .pw-rule i {
+        font-size: 11px;
+        color: var(--border);
+        transition: color 0.2s;
+      }
+      .pw-rule.met {
+        color: var(--success);
+      }
+      .pw-rule.met i {
+        color: var(--success);
+      }
+
+      .modal-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 24px;
+      }
+      .btn-ghost {
+        flex: 1;
+        padding: 10px;
+        border: 1.5px solid var(--border);
+        border-radius: var(--radius);
+        font-family: "Inter", sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--muted);
+        background: transparent;
+        cursor: pointer;
+        transition:
+          border-color 0.2s,
+          color 0.2s;
+      }
+      .btn-ghost:hover {
+        border-color: var(--primary);
+        color: var(--primary);
+      }
+      .modal-actions .btn-primary {
+        flex: 2;
+        margin-bottom: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- FIX FI-3: aria-live region for accessible toast announcements -->
+    <div
+      id="toast-container"
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
+    ></div>
+
+    <!-- ── NEW PASSWORD MODAL ── -->
+    <div class="modal-overlay" id="np-modal-overlay">
+      <div
+        class="modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="np-modal-title"
+      >
+        <div class="modal-icon">
+          <i class="fa-solid fa-key"></i>
+        </div>
+        <h3 id="np-modal-title">Set Your New Password</h3>
+        <p class="modal-subtitle">
+          Your account requires a new password before you can continue. Please
+          choose a strong password below.
+        </p>
+
+        <div class="form-group">
+          <label for="np-password">New Password</label>
+          <div class="input-wrap">
+            <i class="fa-solid fa-lock field-icon"></i>
+            <input
+              type="password"
+              id="np-password"
+              placeholder="••••••••"
+              autocomplete="new-password"
+            />
+            <i class="fa-regular fa-eye toggle-pw" id="toggle-np-pw"></i>
+          </div>
+          <div class="strength-bar-wrap" id="np-strength-bar">
+            <div class="strength-segment" id="seg1"></div>
+            <div class="strength-segment" id="seg2"></div>
+            <div class="strength-segment" id="seg3"></div>
+            <div class="strength-segment" id="seg4"></div>
+          </div>
+          <div class="pw-rules" id="pw-rules">
+            <div class="pw-rule" id="rule-len">
+              <i class="fa-solid fa-circle-check"></i>8+ characters
+            </div>
+            <div class="pw-rule" id="rule-upper">
+              <i class="fa-solid fa-circle-check"></i>Uppercase letter
+            </div>
+            <div class="pw-rule" id="rule-lower">
+              <i class="fa-solid fa-circle-check"></i>Lowercase letter
+            </div>
+            <div class="pw-rule" id="rule-num">
+              <i class="fa-solid fa-circle-check"></i>Number
+            </div>
+            <div class="pw-rule" id="rule-special">
+              <i class="fa-solid fa-circle-check"></i>Special character
+            </div>
+          </div>
+          <div class="error-msg" id="np-pw-err">
+            Password does not meet all requirements.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="np-confirm">Confirm Password</label>
+          <div class="input-wrap">
+            <i class="fa-solid fa-lock field-icon"></i>
+            <input
+              type="password"
+              id="np-confirm"
+              placeholder="••••••••"
+              autocomplete="new-password"
+            />
+            <i class="fa-regular fa-eye toggle-pw" id="toggle-np-confirm"></i>
+          </div>
+          <div class="error-msg" id="np-confirm-err">
+            Passwords do not match.
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button class="btn-ghost" id="np-cancel-btn" type="button">
+            Cancel
+          </button>
+          <button class="btn-primary" id="np-submit-btn" type="button">
+            <div class="spinner" id="np-spinner"></div>
+            <span id="np-btn-text">Set Password</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="page">
+      <!-- LEFT -->
+      <div class="left-panel">
+        <div class="brand-badge">
+          <i class="fa-brands fa-aws"></i>
+          <span>INTERNSHIP PROJECT · SERVERLESS</span>
+        </div>
+        <h1 class="left-title">
+          AWS Smart Employee<br /><span>Onboarding &amp; Identity</span>
+        </h1>
+        <p class="left-desc">
+          Secure, serverless employee onboarding powered by AWS — Cognito, S3,
+          Step Functions, Lambda, and SES working together.
+        </p>
+        <div class="feature-cards">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <div class="feature-text">
+              <h4>Secure Authentication</h4>
+              <p>
+                Amazon Cognito with JWT tokens — every request verified at the
+                API Gateway.
+              </p>
+            </div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fa-solid fa-chart-line"></i>
+            </div>
+            <div class="feature-text">
+              <h4>Real-Time Progress Tracking</h4>
+              <p>
+                Step Functions orchestrate each onboarding stage and expose live
+                status.
+              </p>
+            </div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fa-solid fa-file-circle-check"></i>
+            </div>
+            <div class="feature-text">
+              <h4>Document Management</h4>
+              <p>
+                Direct-to-S3 uploads via presigned URLs — no data passes through
+                the server.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT -->
+      <div class="right-panel">
+        <div class="login-box">
+          <div class="login-header">
+            <h2>Welcome back</h2>
+            <p>Sign in to access your onboarding portal.</p>
+          </div>
+
+          <form id="login-form" novalidate>
+            <div class="form-group">
+              <label for="email">Email address</label>
+              <div class="input-wrap">
+                <i class="fa-regular fa-envelope field-icon"></i>
+                <input
+                  type="email"
+                  id="email"
+                  placeholder="you@company.com"
+                  autocomplete="email"
+                />
+              </div>
+              <div class="error-msg" id="email-err">
+                Please enter a valid email.
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 24px">
+              <label for="password">Password</label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-lock field-icon"></i>
+                <input
+                  type="password"
+                  id="password"
+                  placeholder="••••••••"
+                  autocomplete="current-password"
+                />
+                <i class="fa-regular fa-eye toggle-pw" id="toggle-pw"></i>
+              </div>
+              <div class="error-msg" id="pw-err">Password is required.</div>
+            </div>
+
+            <button type="submit" class="btn-primary" id="signin-btn">
+              <div class="spinner" id="btn-spinner"></div>
+              <span id="btn-text">Sign In</span>
+            </button>
+          </form>
+
+          <div class="login-footer">
+            <!-- FIX L-3: derive region from UserPoolId dynamically via JS -->
+            <p>
+              Secured by <span>Amazon Cognito</span> &nbsp;·&nbsp;
+              <span id="cognito-region"></span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      FIX CS-6: Removed full AWS SDK (~600KB) — it was loaded but never used.
+      Only the Cognito Identity SDK is needed for login.
+      FIX H-2: Pinned to a single CDN and version (6.3.9) to match dashboards.
+    -->
+    <script src="https://unpkg.com/amazon-cognito-identity-js@6.3.9/dist/amazon-cognito-identity.min.js"></script>
+
+    <script>
+      // ─────────────────────────────────────────
+      // CONFIGURATION
+      // FIX C-2: ClientId now matches the dashboards (was 5udchu9v5t701vto4h97r8s6v2)
+      // ─────────────────────────────────────────
+      const COGNITO_CONFIG = {
+        UserPoolId: "ap-south-1_jltUlHBDV",
+        ClientId: "5udchu9v5t701vto4h97r8s6v2", // ← unified with dashboards
+      };
+
+      const poolData = {
+        UserPoolId: COGNITO_CONFIG.UserPoolId,
+        ClientId: COGNITO_CONFIG.ClientId,
+      };
+      const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+
+      // FIX L-3: Derive region from UserPoolId at runtime
+      document.getElementById("cognito-region").textContent =
+        COGNITO_CONFIG.UserPoolId.split("_")[0];
+
+      // Holds cognitoUser reference + required attributes during NEW_PASSWORD_REQUIRED flow
+      // FIX AUTH-1: store attributes alongside the user object
+      let pendingAuth = null; // { user: CognitoUser, attributes: Object }
+
+      // ─────────────────────────────────────────
+      // TOAST
+      // FIX M-1: Use textContent for message to prevent XSS via innerHTML
+      // ─────────────────────────────────────────
+      function showToast(message, type = "info") {
+        const icons = {
+          success: "fa-circle-check",
+          error: "fa-circle-xmark",
+          info: "fa-circle-info",
+          warning: "fa-triangle-exclamation",
+        };
+        const container = document.getElementById("toast-container");
+        const toast = document.createElement("div");
+        toast.className = `toast ${type}`;
+        const icon = document.createElement("i");
+        icon.className = `fa-solid ${icons[type] || "fa-circle-info"}`;
+        const text = document.createElement("span");
+        text.textContent = message; // safe — no innerHTML
+        toast.appendChild(icon);
+        toast.appendChild(text);
+        container.appendChild(toast);
+        setTimeout(() => {
+          toast.style.animation = "fadeOut .3s ease forwards";
+          setTimeout(() => toast.remove(), 300);
+        }, 4000);
+      }
+
+      // ─────────────────────────────────────────
+      // PASSWORD TOGGLES
+      // ─────────────────────────────────────────
+      document
+        .getElementById("toggle-pw")
+        .addEventListener("click", function () {
+          const pw = document.getElementById("password");
+          const show = pw.type === "password";
+          pw.type = show ? "text" : "password";
+          this.classList.toggle("fa-eye", !show);
+          this.classList.toggle("fa-eye-slash", show);
+        });
+
+      document
+        .getElementById("toggle-np-pw")
+        .addEventListener("click", function () {
+          const pw = document.getElementById("np-password");
+          const show = pw.type === "password";
+          pw.type = show ? "text" : "password";
+          this.classList.toggle("fa-eye", !show);
+          this.classList.toggle("fa-eye-slash", show);
+        });
+
+      document
+        .getElementById("toggle-np-confirm")
+        .addEventListener("click", function () {
+          const pw = document.getElementById("np-confirm");
+          const show = pw.type === "password";
+          pw.type = show ? "text" : "password";
+          this.classList.toggle("fa-eye", !show);
+          this.classList.toggle("fa-eye-slash", show);
+        });
+
+      // ─────────────────────────────────────────
+      // FORM VALIDATION
+      // ─────────────────────────────────────────
+      function validateLoginForm() {
+        let valid = true;
+        const email = document.getElementById("email").value.trim();
+        const pw = document.getElementById("password").value;
+        const emailErr = document.getElementById("email-err");
+        const pwErr = document.getElementById("pw-err");
+        emailErr.style.display = "none";
+        pwErr.style.display = "none";
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          emailErr.style.display = "block";
+          valid = false;
+        }
+        if (!pw) {
+          pwErr.style.display = "block";
+          valid = false;
+        }
+        return valid;
+      }
+
+      // ─────────────────────────────────────────
+      // AUTH HELPERS
+      // ─────────────────────────────────────────
+      function setLoading(loading) {
+        document.getElementById("signin-btn").disabled = loading;
+        document.getElementById("btn-spinner").style.display = loading
+          ? "block"
+          : "none";
+        document.getElementById("btn-text").textContent = loading
+          ? "Signing in…"
+          : "Sign In";
+      }
+
+      function storeTokens(session) {
+        // FIX AUTH-4: Store all three tokens consistently
+        localStorage.setItem(
+          "accessToken",
+          session.getAccessToken().getJwtToken(),
+        );
+        localStorage.setItem("idToken", session.getIdToken().getJwtToken());
+        localStorage.setItem(
+          "refreshToken",
+          session.getRefreshToken().getToken(),
+        );
+      }
+
+      // FIX AUTH-2: normalise group names to lowercase for role detection
+      function isHRUser(idToken) {
+        try {
+          const payload = JSON.parse(atob(idToken.split(".")[1]));
+          const groups = payload["cognito:groups"] || [];
+          return groups.some((g) => ["hr", "admin"].includes(g.toLowerCase()));
+        } catch (_) {
+          return false;
+        }
+      }
+
+      function redirectByRole(session) {
+        const idJwt = session.getIdToken().getJwtToken();
+        const dest = isHRUser(idJwt)
+          ? "hr-dashboard.html"
+          : "employee-dashboard.html";
+        showToast("Login successful! Redirecting…", "success");
+        setTimeout(() => {
+          window.location.href = dest;
+        }, 1000);
+      }
+
+      // ─────────────────────────────────────────
+      // LOGIN FORM SUBMIT
+      // ─────────────────────────────────────────
+      document
+        .getElementById("login-form")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          if (!validateLoginForm()) return;
+
+          const email = document.getElementById("email").value.trim();
+          const password = document.getElementById("password").value;
+
+          setLoading(true);
+
+          const authDetails = new AmazonCognitoIdentity.AuthenticationDetails({
+            Username: email,
+            Password: password,
+          });
+          const cognitoUser = new AmazonCognitoIdentity.CognitoUser({
+            Username: email,
+            Pool: userPool,
+          });
+
+          cognitoUser.authenticateUser(authDetails, {
+            onSuccess(session) {
+              setLoading(false);
+              storeTokens(session);
+              redirectByRole(session);
+            },
+            onFailure(err) {
+              setLoading(false);
+              const msgs = {
+                NotAuthorizedException: "Incorrect email or password.",
+                UserNotFoundException: "No account found with this email.",
+                UserNotConfirmedException:
+                  "Please verify your email before signing in.",
+                PasswordResetRequiredException:
+                  "Password reset required. Check your email.",
+              };
+              showToast(
+                msgs[err.code] ||
+                  err.message ||
+                  "Login failed. Please try again.",
+                "error",
+              );
+            },
+            // FIX AUTH-1: capture userAttributes for completeNewPasswordChallenge
+            newPasswordRequired(userAttributes, requiredAttributes) {
+              setLoading(false);
+              // Strip Cognito read-only attributes before passing back
+              delete userAttributes.email;
+              delete userAttributes.email_verified;
+              delete userAttributes.phone_number_verified;
+
+              pendingAuth = {
+                user: cognitoUser,
+                attributes: userAttributes,
+              };
+              openNewPasswordModal();
+            },
+          });
+        });
+
+      // ─────────────────────────────────────────
+      // NEW PASSWORD MODAL
+      // ─────────────────────────────────────────
+      function openNewPasswordModal() {
+        document.getElementById("np-password").value = "";
+        document.getElementById("np-confirm").value = "";
+        document.getElementById("np-password").type = "password";
+        document.getElementById("np-confirm").type = "password";
+        document.getElementById("toggle-np-pw").className =
+          "fa-regular fa-eye toggle-pw";
+        document.getElementById("toggle-np-confirm").className =
+          "fa-regular fa-eye toggle-pw";
+        document.getElementById("np-pw-err").style.display = "none";
+        document.getElementById("np-confirm-err").style.display = "none";
+        resetStrengthBar();
+        resetRules();
+        document.getElementById("np-modal-overlay").classList.add("active");
+        setTimeout(() => document.getElementById("np-password").focus(), 300);
+      }
+
+      function closeNewPasswordModal() {
+        document.getElementById("np-modal-overlay").classList.remove("active");
+        pendingAuth = null;
+      }
+
+      document
+        .getElementById("np-cancel-btn")
+        .addEventListener("click", function () {
+          closeNewPasswordModal();
+          showToast("Password change cancelled. Please sign in again.", "info");
+        });
+
+      document
+        .getElementById("np-modal-overlay")
+        .addEventListener("click", function (e) {
+          if (e.target === this) {
+            closeNewPasswordModal();
+            showToast(
+              "Password change cancelled. Please sign in again.",
+              "info",
+            );
+          }
+        });
+
+      // ─────────────────────────────────────────
+      // PASSWORD STRENGTH & RULES
+      // ─────────────────────────────────────────
+      const RULES = {
+        len: {
+          el: document.getElementById("rule-len"),
+          test: (v) => v.length >= 8,
+        },
+        upper: {
+          el: document.getElementById("rule-upper"),
+          test: (v) => /[A-Z]/.test(v),
+        },
+        lower: {
+          el: document.getElementById("rule-lower"),
+          test: (v) => /[a-z]/.test(v),
+        },
+        num: {
+          el: document.getElementById("rule-num"),
+          test: (v) => /[0-9]/.test(v),
+        },
+        special: {
+          el: document.getElementById("rule-special"),
+          test: (v) => /[^A-Za-z0-9]/.test(v),
+        },
+      };
+
+      const SEGMENTS = [
+        document.getElementById("seg1"),
+        document.getElementById("seg2"),
+        document.getElementById("seg3"),
+        document.getElementById("seg4"),
+      ];
+      const STRENGTH_COLORS = ["#dc2626", "#f97316", "#eab308", "#16a34a"];
+
+      function resetStrengthBar() {
+        SEGMENTS.forEach((s) => (s.style.background = "var(--border)"));
+      }
+      function resetRules() {
+        Object.values(RULES).forEach((r) => r.el.classList.remove("met"));
+      }
+
+      function updateStrength(value) {
+        let score = 0;
+        Object.values(RULES).forEach((r) => {
+          const met = r.test(value);
+          r.el.classList.toggle("met", met);
+          if (met) score++;
+        });
+        SEGMENTS.forEach((s, i) => {
+          s.style.background =
+            i < score
+              ? STRENGTH_COLORS[Math.min(score - 1, 3)]
+              : "var(--border)";
+        });
+        return score;
+      }
+
+      document
+        .getElementById("np-password")
+        .addEventListener("input", function () {
+          updateStrength(this.value);
+          document.getElementById("np-pw-err").style.display = "none";
+        });
+      document
+        .getElementById("np-confirm")
+        .addEventListener("input", function () {
+          document.getElementById("np-confirm-err").style.display = "none";
+        });
+
+      // ─────────────────────────────────────────
+      // VALIDATE NEW PASSWORD MODAL
+      // ─────────────────────────────────────────
+      function validateNewPasswordForm() {
+        const pw = document.getElementById("np-password").value;
+        const confirm = document.getElementById("np-confirm").value;
+        let valid = true;
+
+        const pwErr = document.getElementById("np-pw-err");
+        const confirmErr = document.getElementById("np-confirm-err");
+        pwErr.style.display = "none";
+        confirmErr.style.display = "none";
+
+        const score = updateStrength(pw);
+        if (!pw || score < 5) {
+          pwErr.style.display = "block";
+          valid = false;
+        }
+        if (!confirm || confirm !== pw) {
+          confirmErr.style.display = "block";
+          valid = false;
+        }
+        return valid;
+      }
+
+      // ─────────────────────────────────────────
+      // SUBMIT NEW PASSWORD
+      // FIX AUTH-1: pass captured userAttributes to completeNewPasswordChallenge
+      // ─────────────────────────────────────────
+      function setModalLoading(loading) {
+        document.getElementById("np-submit-btn").disabled = loading;
+        document.getElementById("np-spinner").style.display = loading
+          ? "block"
+          : "none";
+        document.getElementById("np-btn-text").textContent = loading
+          ? "Setting password…"
+          : "Set Password";
+      }
+
+      document
+        .getElementById("np-submit-btn")
+        .addEventListener("click", function () {
+          if (!validateNewPasswordForm()) return;
+          if (!pendingAuth) {
+            showToast("Session expired. Please sign in again.", "error");
+            closeNewPasswordModal();
+            return;
+          }
+
+          const newPassword = document.getElementById("np-password").value;
+          setModalLoading(true);
+
+          // FIX AUTH-1: Pass the stored userAttributes (not empty {})
+          pendingAuth.user.completeNewPasswordChallenge(
+            newPassword,
+            pendingAuth.attributes,
+            {
+              onSuccess(session) {
+                console.log("SUCCESS", session);
+                setModalLoading(false);
+                closeNewPasswordModal();
+                storeTokens(session);
+                redirectByRole(session);
+              },
+
+              onFailure(err) {
+                console.error(err);
+                setModalLoading(false);
+                showToast(err.message || "Failed", "error");
+              },
+            },
+          );
+        });
+
+      // ─────────────────────────────────────────
+      // REDIRECT IF ALREADY LOGGED IN
+      // FIX C-4: redirect based on role, not always to employee dashboard
+      // FIX H-6: check token expiry before redirecting
+      // ─────────────────────────────────────────
+      (function checkExistingSession() {
+        const accessToken = localStorage.getItem("accessToken");
+        const idToken = localStorage.getItem("idToken");
+        if (!accessToken || !idToken) return;
+
+        // Check if token is expired
+        try {
+          const payload = JSON.parse(atob(accessToken.split(".")[1]));
+          if (Date.now() >= payload.exp * 1000) {
+            // Expired — clear storage and let user log in fresh
+            localStorage.clear();
+            sessionStorage.clear();
+            return;
+          }
+        } catch (_) {
+          localStorage.clear();
+          return;
+        }
+
+        // Valid session — redirect by role
+        const dest = isHRUser(idToken)
+          ? "hr-dashboard.html"
+          : "employee-dashboard.html";
+        window.location.href = dest;
+      })();
+    </script>
+  </body>
+</html>

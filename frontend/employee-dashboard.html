@@ -1,0 +1,1582 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- FIX L-1: More descriptive page title -->
+    <title>My Onboarding – AWS Smart Employee Onboarding</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --primary: #2563eb;
+        --primary-dark: #1d4ed8;
+        --primary-light: #eff6ff;
+        --navy: #1e293b;
+        --bg: #f8fafc;
+        --white: #ffffff;
+        --text: #0f172a;
+        --muted: #64748b;
+        --border: #e2e8f0;
+        --success: #16a34a;
+        --success-bg: #dcfce7;
+        --warning: #d97706;
+        --warning-bg: #fef3c7;
+        --danger: #dc2626;
+        --danger-bg: #fee2e2;
+        --radius: 10px;
+      }
+
+      html,
+      body {
+        height: 100%;
+        font-family: "Inter", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+      }
+
+      /* ── NAVBAR ── */
+      .navbar {
+        background: var(--navy);
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 32px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+      }
+      .nav-brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #fff;
+      }
+      .nav-brand i {
+        color: #60a5fa;
+        font-size: 18px;
+      }
+      .nav-brand span {
+        font-size: 15px;
+        font-weight: 600;
+      }
+      .nav-right {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+      .nav-user {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #cbd5e1;
+        font-size: 13.5px;
+      }
+      .avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: rgba(37, 99, 235, 0.4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #93c5fd;
+        font-size: 13px;
+        font-weight: 600;
+      }
+      .btn-logout {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: #cbd5e1;
+        padding: 6px 14px;
+        border-radius: 6px;
+        font-size: 13px;
+        cursor: pointer;
+        font-family: "Inter", sans-serif;
+        transition: background 0.2s;
+      }
+      .btn-logout:hover {
+        background: rgba(255, 255, 255, 0.14);
+      }
+
+      /* ── MAIN ── */
+      .main {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 32px 24px 60px;
+      }
+
+      .section-header {
+        margin-bottom: 20px;
+      }
+      .section-header h2 {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--text);
+      }
+      .section-header p {
+        font-size: 13.5px;
+        color: var(--muted);
+        margin-top: 3px;
+      }
+
+      /* ── WELCOME STRIP ── */
+      .welcome-strip {
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 22px 28px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 24px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+      }
+      .welcome-strip .w-left h2 {
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--text);
+      }
+      .welcome-strip .w-left p {
+        font-size: 14px;
+        color: var(--muted);
+        margin-top: 3px;
+      }
+      .stage-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--primary-light);
+        color: var(--primary);
+        border-radius: 20px;
+        padding: 6px 14px;
+        font-size: 13px;
+        font-weight: 600;
+      }
+      /* ── REFRESH DASHBOARD BUTTON ── */
+      .w-right {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .btn-refresh {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--primary);
+        color: #fff;
+        border: none;
+        border-radius: var(--radius);
+        padding: 8px 16px;
+        font-family: "Inter", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .btn-refresh:hover:not(:disabled) {
+        background: var(--primary-dark);
+      }
+      .btn-refresh:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+      .btn-refresh i.fa-spin-refresh {
+        animation: spin 0.8s linear infinite;
+      }
+
+      /* ── KPI CARDS ── */
+      .kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin-bottom: 28px;
+      }
+      .kpi-card {
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 20px 22px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+        transition: box-shadow 0.2s;
+      }
+      .kpi-card:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      }
+      .kpi-card .kpi-label {
+        font-size: 12px;
+        color: var(--muted);
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 8px;
+      }
+      .kpi-card .kpi-value {
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 4px;
+      }
+      .kpi-card .kpi-sub {
+        font-size: 12.5px;
+        color: var(--muted);
+      }
+      .kpi-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 12px;
+      }
+      .kpi-icon.blue {
+        background: #eff6ff;
+        color: var(--primary);
+      }
+      .kpi-icon.green {
+        background: #dcfce7;
+        color: var(--success);
+      }
+      .kpi-icon.orange {
+        background: #fef3c7;
+        color: var(--warning);
+      }
+
+      /* ── TIMELINE ── */
+      .timeline-card {
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 28px 32px;
+        margin-bottom: 28px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+      }
+      .timeline-card h3 {
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 28px;
+      }
+      .timeline {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        position: relative;
+        padding-bottom: 8px;
+      }
+      .timeline::before {
+        content: "";
+        position: absolute;
+        top: 20px;
+        left: calc(100% / 12);
+        right: calc(100% / 12);
+        height: 2px;
+        background: var(--border);
+        z-index: 0;
+      }
+      .timeline-step {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        flex: 1;
+        position: relative;
+        z-index: 1;
+      }
+      .step-dot {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        border: 2px solid var(--border);
+        background: var(--white);
+        transition: all 0.3s;
+      }
+      .timeline-step.completed .step-dot {
+        background: var(--success);
+        border-color: var(--success);
+        color: #fff;
+      }
+      .timeline-step.current .step-dot {
+        background: var(--primary);
+        border-color: var(--primary);
+        color: #fff;
+        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+      }
+      .timeline-step.pending .step-dot {
+        background: var(--white);
+        border-color: var(--border);
+        color: #cbd5e1;
+      }
+      .step-label {
+        font-size: 11.5px;
+        font-weight: 500;
+        text-align: center;
+        line-height: 1.4;
+      }
+      .timeline-step.completed .step-label {
+        color: var(--success);
+      }
+      .timeline-step.current .step-label {
+        color: var(--primary);
+        font-weight: 600;
+      }
+      .timeline-step.pending .step-label {
+        color: var(--muted);
+      }
+
+      .progress-row {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-top: 24px;
+      }
+      .progress-bar-wrap {
+        flex: 1;
+        height: 8px;
+        background: var(--border);
+        border-radius: 99px;
+        overflow: hidden;
+      }
+      .progress-bar-fill {
+        height: 100%;
+        background: var(--primary);
+        border-radius: 99px;
+        transition: width 0.6s ease;
+      }
+      .progress-pct {
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--primary);
+        min-width: 40px;
+      }
+      .progress-stage-label {
+        font-size: 12.5px;
+        color: var(--muted);
+      }
+
+      /* ── TWO-COL GRID ── */
+      .two-col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        margin-bottom: 28px;
+      }
+
+      /* ── CARDS ── */
+      .card {
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 24px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+      }
+      .card h3 {
+        font-size: 15px;
+        font-weight: 700;
+        margin-bottom: 18px;
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .card h3 i {
+        color: var(--primary);
+      }
+
+      /* ── DOCUMENT UPLOAD ── */
+      .upload-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+      .upload-item {
+        border: 1.5px dashed var(--border);
+        border-radius: var(--radius);
+        padding: 16px;
+        transition:
+          border-color 0.2s,
+          background 0.2s;
+      }
+      .upload-item:hover {
+        border-color: var(--primary);
+        background: var(--primary-light);
+      }
+      .upload-item .doc-icon {
+        width: 36px;
+        height: 36px;
+        background: var(--primary-light);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary);
+        font-size: 15px;
+        margin-bottom: 10px;
+      }
+      .upload-item .doc-name {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 10px;
+      }
+      .file-chooser {
+        position: relative;
+        margin-bottom: 8px;
+      }
+      .file-chooser input[type="file"] {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        cursor: pointer;
+        z-index: 2;
+      }
+      .file-label {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 6px 10px;
+        font-size: 12px;
+        color: var(--muted);
+        background: var(--bg);
+        cursor: pointer;
+        transition: border-color 0.2s;
+      }
+      .file-label:hover {
+        border-color: var(--primary);
+      }
+      .filename-display {
+        font-size: 11.5px;
+        color: var(--muted);
+        margin-bottom: 8px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        min-height: 17px;
+      }
+      .btn-upload {
+        width: 100%;
+        padding: 7px;
+        background: var(--primary);
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        font-size: 12.5px;
+        font-weight: 600;
+        cursor: pointer;
+        font-family: "Inter", sans-serif;
+        transition: background 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+      }
+      .btn-upload:hover:not(:disabled) {
+        background: var(--primary-dark);
+      }
+      .btn-upload:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+      .upload-status {
+        font-size: 11.5px;
+        font-weight: 500;
+        margin-top: 6px;
+        min-height: 16px;
+      }
+      .upload-progress {
+        height: 3px;
+        background: var(--border);
+        border-radius: 99px;
+        margin-top: 6px;
+        overflow: hidden;
+        display: none;
+      }
+      .upload-progress-fill {
+        height: 100%;
+        background: var(--primary);
+        border-radius: 99px;
+        transition: width 0.3s;
+      }
+
+      /* ── DOC STATUS TABLE ── */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13.5px;
+      }
+      th {
+        text-align: left;
+        padding: 10px 12px;
+        background: var(--bg);
+        color: var(--muted);
+        font-size: 11.5px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+        border-bottom: 1px solid var(--border);
+      }
+      td {
+        padding: 11px 12px;
+        border-bottom: 1px solid var(--border);
+        color: var(--text);
+        vertical-align: middle;
+      }
+      tr:last-child td {
+        border-bottom: none;
+      }
+      tr:hover td {
+        background: #fafafa;
+      }
+
+      /* ── BADGES ── */
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-size: 11.5px;
+        font-weight: 600;
+      }
+      .badge.verified {
+        background: var(--success-bg);
+        color: var(--success);
+      }
+      .badge.pending {
+        background: var(--warning-bg);
+        color: var(--warning);
+      }
+      .badge.rejected {
+        background: var(--danger-bg);
+        color: var(--danger);
+      }
+      .badge.missing {
+        background: #f1f5f9;
+        color: var(--muted);
+      }
+
+      /* ── POLICY CARD ── */
+      .policy-check {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 14px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        margin-bottom: 12px;
+        cursor: pointer;
+        transition:
+          border-color 0.2s,
+          background 0.2s;
+      }
+      .policy-check:hover {
+        border-color: var(--primary);
+        background: var(--primary-light);
+      }
+      .policy-check input[type="checkbox"] {
+        accent-color: var(--primary);
+        width: 16px;
+        height: 16px;
+        margin-top: 2px;
+        flex-shrink: 0;
+      }
+      .policy-check .pol-text {
+        font-size: 13.5px;
+      }
+      .policy-check .pol-text strong {
+        display: block;
+        margin-bottom: 3px;
+      }
+      .policy-check .pol-text span {
+        color: var(--muted);
+        font-size: 12.5px;
+      }
+      .policy-confirm {
+        font-size: 12.5px;
+        color: var(--muted);
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 10px 14px;
+        margin-bottom: 16px;
+      }
+      .policy-success {
+        display: none;
+        padding: 14px 16px;
+        background: var(--success-bg);
+        border: 1px solid #86efac;
+        border-radius: 8px;
+        color: var(--success);
+        font-size: 13.5px;
+        font-weight: 600;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 16px;
+      }
+
+      .btn-primary {
+        padding: 10px 22px;
+        background: var(--primary);
+        color: #fff;
+        border: none;
+        border-radius: var(--radius);
+        font-family: "Inter", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .btn-primary:hover:not(:disabled) {
+        background: var(--primary-dark);
+      }
+      .btn-primary:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+      }
+      .btn-full {
+        width: 100%;
+        justify-content: center;
+      }
+
+      /* ── SKELETON ── */
+      .skeleton {
+        background: linear-gradient(
+          90deg,
+          #f0f0f0 25%,
+          #e0e0e0 50%,
+          #f0f0f0 75%
+        );
+        background-size: 200% 100%;
+        animation: shimmer 1.4s infinite;
+        border-radius: 6px;
+      }
+      @keyframes shimmer {
+        to {
+          background-position: -200% 0;
+        }
+      }
+
+      /* ── TOAST ── */
+      #toast-container {
+        position: fixed;
+        top: 72px;
+        right: 20px;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .toast {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 18px;
+        border-radius: 8px;
+        font-size: 13.5px;
+        font-weight: 500;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        animation: slideIn 0.3s ease;
+        min-width: 280px;
+      }
+      .toast.success {
+        background: #dcfce7;
+        color: #15803d;
+        border-left: 4px solid #16a34a;
+      }
+      .toast.error {
+        background: #fee2e2;
+        color: #b91c1c;
+        border-left: 4px solid #dc2626;
+      }
+      .toast.info {
+        background: #dbeafe;
+        color: #1d4ed8;
+        border-left: 4px solid #2563eb;
+      }
+      .toast.warning {
+        background: #fef9c3;
+        color: #92400e;
+        border-left: 4px solid #d97706;
+      }
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateX(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      @keyframes fadeOut {
+        to {
+          opacity: 0;
+          transform: translateX(20px);
+        }
+      }
+
+      /* ── SPINNER ── */
+      .btn-spinner {
+        width: 15px;
+        height: 15px;
+        border: 2px solid rgba(255, 255, 255, 0.4);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+        display: none;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* ── EMPTY / ERROR ── */
+      .empty-state {
+        padding: 32px;
+        text-align: center;
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .empty-state i {
+        font-size: 32px;
+        margin-bottom: 12px;
+        color: var(--border);
+        display: block;
+      }
+
+      @media (max-width: 900px) {
+        .two-col {
+          grid-template-columns: 1fr;
+        }
+        .kpi-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        .upload-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 600px) {
+        .timeline {
+          overflow-x: auto;
+          gap: 4px;
+        }
+        .step-label {
+          font-size: 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- FIX FI-3: aria-live for accessible toast announcements -->
+    <div
+      id="toast-container"
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
+    ></div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+      <div class="nav-brand">
+        <i class="fa-brands fa-aws"></i>
+        <span>AWS Smart Employee Onboarding</span>
+      </div>
+      <div class="nav-right">
+        <div class="nav-user">
+          <div class="avatar" id="nav-avatar">?</div>
+          <span id="nav-name">Loading…</span>
+        </div>
+        <button class="btn-logout" id="logout-btn">
+          <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </button>
+      </div>
+    </nav>
+
+    <!-- MAIN -->
+    <div class="main">
+      <!-- WELCOME -->
+      <div class="welcome-strip" id="welcome-strip">
+        <div class="w-left">
+          <h2 id="welcome-msg">Welcome back!</h2>
+          <p id="welcome-sub">Your onboarding is in progress.</p>
+        </div>
+        <div class="w-right">
+          <div class="stage-pill" id="current-stage-pill">
+            <i class="fa-solid fa-circle-notch fa-spin"></i> Loading…
+          </div>
+          <button class="btn-refresh" id="btn-refresh-dashboard">
+            <i class="fa-solid fa-rotate" id="refresh-icon"></i> Refresh
+            Dashboard
+          </button>
+        </div>
+      </div>
+
+      <!-- KPI CARDS -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-icon blue"><i class="fa-solid fa-percent"></i></div>
+          <div class="kpi-label">Overall Progress</div>
+          <div class="kpi-value" id="kpi-pct">—</div>
+          <div class="kpi-sub">Onboarding completion</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon green">
+            <i class="fa-solid fa-layer-group"></i>
+          </div>
+          <div class="kpi-label">Current Stage</div>
+          <div class="kpi-value" style="font-size: 14px" id="kpi-stage">—</div>
+          <div class="kpi-sub">Active workflow step</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon orange">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+          </div>
+          <div class="kpi-label">Workflow Status</div>
+          <div class="kpi-value" style="font-size: 14px" id="kpi-status">—</div>
+          <div class="kpi-sub">Step Functions execution</div>
+        </div>
+      </div>
+
+      <!-- TIMELINE -->
+      <div class="timeline-card">
+        <h3>
+          <i class="fa-solid fa-route" style="color: var(--primary)"></i>
+          &nbsp;Onboarding Timeline
+        </h3>
+        <div class="timeline" id="onboarding-timeline">
+          <!-- generated by JS -->
+        </div>
+        <div class="progress-row">
+          <div class="progress-bar-wrap">
+            <div
+              class="progress-bar-fill"
+              id="main-progress-fill"
+              style="width: 0%"
+            ></div>
+          </div>
+          <div class="progress-pct" id="main-pct">0%</div>
+          <div class="progress-stage-label" id="main-stage-label">
+            Initialising…
+          </div>
+        </div>
+      </div>
+
+      <!-- DOCUMENT UPLOAD + STATUS -->
+      <div class="two-col">
+        <div class="card">
+          <h3><i class="fa-solid fa-upload"></i> Document Upload</h3>
+          <div class="upload-grid" id="upload-grid">
+            <!-- generated by JS -->
+          </div>
+        </div>
+        <div class="card">
+          <h3><i class="fa-solid fa-file-circle-check"></i> Document Status</h3>
+          <div id="doc-status-wrap">
+            <div class="empty-state" id="doc-loading">
+              <i
+                class="fa-solid fa-circle-notch fa-spin"
+                style="font-size: 24px; color: var(--border)"
+              ></i>
+              <p style="margin-top: 10px">Loading document status…</p>
+            </div>
+            <table id="doc-table" style="display: none">
+              <thead>
+                <tr>
+                  <th>Document</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="doc-tbody"></tbody>
+            </table>
+            <div class="empty-state" id="doc-empty" style="display: none">
+              <i class="fa-regular fa-folder-open"></i>
+              <p>No documents uploaded yet.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- POLICY SIGN-OFF -->
+      <div class="card">
+        <h3><i class="fa-solid fa-file-signature"></i> Policy Sign-Off</h3>
+        <!-- FIX FI-5: Success banner shown after submission -->
+        <div class="policy-success" id="policy-success-banner">
+          <i class="fa-solid fa-circle-check"></i>
+          <span>Policies signed — <span id="policy-signed-date"></span></span>
+        </div>
+        <div id="policy-form-section">
+          <label class="policy-check">
+            <input type="checkbox" id="it-policy" />
+            <div class="pol-text">
+              <strong>IT Security Policy</strong>
+              <span
+                >I agree to comply with the company's IT security policy,
+                acceptable use, and data protection guidelines.</span
+              >
+            </div>
+          </label>
+          <label class="policy-check">
+            <input type="checkbox" id="hr-policy" />
+            <div class="pol-text">
+              <strong>HR &amp; Workplace Policy</strong>
+              <span
+                >I acknowledge the employee handbook, code of conduct, leave
+                policy, and workplace behaviour standards.</span
+              >
+            </div>
+          </label>
+          <div class="policy-confirm">
+            By submitting, I confirm that I have read and understood all
+            policies listed above. This is a legally binding acknowledgement.
+          </div>
+          <button class="btn-primary btn-full" id="policy-btn" disabled>
+            <div class="btn-spinner" id="policy-spinner"></div>
+            <i class="fa-solid fa-pen-nib" id="policy-icon"></i>
+            <span id="policy-text">Submit Policy Sign-Off</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- /main -->
+
+    <!--
+  FIX AUTH-5 / CS-6: Cognito SDK only needed if implementing token refresh.
+  FIX H-2: Pinned to single CDN and version 6.3.9 (consistent with login.html).
+  If token refresh is not needed, remove this script tag entirely.
+-->
+    <script src="https://unpkg.com/amazon-cognito-identity-js@6.3.9/dist/amazon-cognito-identity.min.js"></script>
+    <script>
+      // ─────────────────────────────────────────
+      // CONFIGURATION
+      // FIX C-2: ClientId unified with login.html (was using same 3c1tjvkaohafmciluu0jl8m42c — correct)
+      // ─────────────────────────────────────────
+      const API_BASE =
+        "https://vyvtp67ik8.execute-api.ap-south-1.amazonaws.com/dev";
+      const POOL_DATA = {
+        UserPoolId: "ap-south-1_jltUlHBDV",
+        ClientId: "5udchu9v5t701vto4h97r8s6v2",
+      };
+      const userPool = new AmazonCognitoIdentity.CognitoUserPool(POOL_DATA);
+
+      const STAGES = [
+        {
+          key: "REGISTRATION",
+          label: "Registration",
+          icon: "fa-user-plus",
+          pct: 17,
+        },
+        {
+          key: "DOCUMENT_COLLECTION",
+          label: "Documents",
+          icon: "fa-file-arrow-up",
+          pct: 33,
+        },
+        {
+          key: "IT_PROVISIONING",
+          label: "IT Provisioning",
+          icon: "fa-laptop",
+          pct: 50,
+        },
+        {
+          key: "POLICY_SIGNOFF",
+          label: "Policy Sign-Off",
+          icon: "fa-file-signature",
+          pct: 67,
+        },
+        {
+          key: "MANAGER_INTRODUCTION",
+          label: "Manager Intro",
+          icon: "fa-handshake",
+          pct: 83,
+        },
+        {
+          key: "COMPLETED",
+          label: "Completed",
+          icon: "fa-circle-check",
+          pct: 100,
+        },
+      ];
+
+      const DOC_TYPES = [
+        {
+          id: "GOVERNMENT_ID",
+          name: "Government ID",
+          icon: "fa-id-card",
+          accept: ".pdf,.png,.jpg,.jpeg",
+        },
+        {
+          id: "PASSPORT",
+          name: "Passport",
+          icon: "fa-passport",
+          accept: ".pdf,.png,.jpg,.jpeg",
+        },
+        {
+          id: "TAX_FORM",
+          name: "Tax Form",
+          icon: "fa-file-invoice",
+          accept: ".pdf",
+        },
+        // FIX L-6: fa-file-user doesn't exist in FA6 Free → changed to fa-file-lines
+        { id: "RESUME", name: "Resume", icon: "fa-file-lines", accept: ".pdf" },
+      ];
+
+      let currentEmployeeId = null;
+
+      // ─────────────────────────────────────────
+      // AUTHENTICATION HELPERS
+      // FIX H-1: getToken() now returns idToken (used by Cognito authorizer on API GW)
+      // FIX H-6: Check token expiry before returning
+      // ─────────────────────────────────────────
+      function isTokenExpired(token) {
+        try {
+          const payload = JSON.parse(atob(token.split(".")[1]));
+          return Date.now() >= payload.exp * 1000;
+        } catch {
+          return true;
+        }
+      }
+
+      // FIX H-1: return idToken (not accessToken) — Cognito User Pool Authorizer validates idToken
+      function getToken() {
+        const token =
+          localStorage.getItem("idToken") || sessionStorage.getItem("idToken");
+        if (!token) return null;
+        // FIX H-6: expired tokens cause confusing 401s — check upfront
+        if (isTokenExpired(token)) {
+          showToast(
+            "Your session has expired. Redirecting to login…",
+            "warning",
+          );
+          setTimeout(() => logout(), 1500);
+          return null;
+        }
+        return token;
+      }
+
+      // FIX H-5: getEmployeeId() reads idToken — now consistent with getToken()
+      function getEmployeeId() {
+        return (
+          localStorage.getItem("employeeId") ||
+          sessionStorage.getItem("employeeId")
+        );
+      }
+
+      function getEmployeeName() {
+        const idToken =
+          localStorage.getItem("idToken") || sessionStorage.getItem("idToken");
+        if (!idToken) return "Employee";
+        try {
+          const p = JSON.parse(atob(idToken.split(".")[1]));
+          // FIX M-4: fall back to 'User' rather than exposing full email as display name
+          return p.name || p.given_name || "User";
+        } catch {
+          return "Employee";
+        }
+      }
+
+      function logout() {
+        localStorage.clear();
+        sessionStorage.clear();
+        window.location.href = "login.html";
+      }
+
+      // ─────────────────────────────────────────
+      // TOAST
+      // FIX M-1: Use DOM methods with textContent — no innerHTML for message (XSS safe)
+      // ─────────────────────────────────────────
+      function showToast(msg, type = "info") {
+        const icons = {
+          success: "fa-circle-check",
+          error: "fa-circle-xmark",
+          info: "fa-circle-info",
+          warning: "fa-triangle-exclamation",
+        };
+        const c = document.getElementById("toast-container");
+        const t = document.createElement("div");
+        t.className = `toast ${type}`;
+        const icon = document.createElement("i");
+        icon.className = `fa-solid ${icons[type] || "fa-circle-info"}`;
+        const span = document.createElement("span");
+        span.textContent = msg; // safe
+        t.appendChild(icon);
+        t.appendChild(span);
+        c.appendChild(t);
+        setTimeout(() => {
+          t.style.animation = "fadeOut .3s ease forwards";
+          setTimeout(() => t.remove(), 300);
+        }, 4000);
+      }
+
+      // ─────────────────────────────────────────
+      // API WRAPPER
+      // FIX H-3: Handles non-JSON error responses gracefully
+      // FIX H-1: uses idToken (via getToken()) for Authorization
+      // ─────────────────────────────────────────
+      async function api(method, path, body = null) {
+        const token = getToken();
+        if (!token) throw new Error("No auth token");
+
+        const opts = {
+          method,
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        };
+        if (body) opts.body = JSON.stringify(body);
+
+        let res;
+        try {
+          res = await fetch(API_BASE + path, opts);
+        } catch (networkErr) {
+          throw new Error("Network error — check your connection.");
+        }
+
+        if (res.status === 401 || res.status === 403) {
+          showToast("Session expired. Redirecting to login…", "warning");
+          setTimeout(() => logout(), 1500);
+          throw new Error("Unauthorized");
+        }
+        if (!res.ok) {
+          let msg = `HTTP ${res.status}`;
+          try {
+            const ct = res.headers.get("content-type") || "";
+            if (ct.includes("application/json")) {
+              const errBody = await res.json();
+              msg = errBody.message || errBody.error || errBody.detail || msg;
+            }
+          } catch (_) {}
+          throw new Error(msg);
+        }
+        // FIX H-3: guard against non-JSON 200 responses (e.g. 204 No Content)
+        const ct = res.headers.get("content-type") || "";
+        if (!ct.includes("application/json")) return {};
+        return res.json();
+      }
+
+      // ─────────────────────────────────────────
+      // TIMELINE
+      // ─────────────────────────────────────────
+      function renderTimeline(currentStage) {
+        const tl = document.getElementById("onboarding-timeline");
+        const currentIdx = STAGES.findIndex((s) => s.key === currentStage);
+
+        tl.innerHTML = STAGES.map((s, i) => {
+          const cls =
+            i < currentIdx
+              ? "completed"
+              : i === currentIdx
+                ? "current"
+                : "pending";
+          const icon = i < currentIdx ? "fa-check" : s.icon;
+          return `
+      <div class="timeline-step ${cls}">
+        <div class="step-dot"><i class="fa-solid ${icon}"></i></div>
+        <div class="step-label">${s.label}</div>
+      </div>`;
+        }).join("");
+
+        const stage =
+          STAGES[Math.max(0, currentIdx)] || STAGES[STAGES.length - 1];
+        const pct = stage.pct;
+        document.getElementById("main-progress-fill").style.width = pct + "%";
+        document.getElementById("main-pct").textContent = pct + "%";
+        document.getElementById("main-stage-label").textContent = stage.label;
+        document.getElementById("kpi-pct").textContent = pct + "%";
+        document.getElementById("kpi-stage").textContent = stage.label;
+        document.getElementById("current-stage-pill").innerHTML =
+          `<i class="fa-solid ${stage.icon}"></i> ${stage.label}`;
+      }
+
+      // ─────────────────────────────────────────
+      // PROGRESS
+      // ─────────────────────────────────────────
+      async function loadProgress() {
+        if (!currentEmployeeId) return;
+        try {
+          const data = await api(
+            "GET",
+            `/employee/progress/${currentEmployeeId}`,
+          );
+          // FIX API-2: use ?? instead of || to avoid masking null/0 values
+          const stage = data.currentStage ?? data.stage ?? "REGISTRATION";
+          const status = data.workflowStatus ?? data.status ?? "IN_PROGRESS";
+          renderTimeline(stage);
+          document.getElementById("kpi-status").textContent = status.replace(
+            /_/g,
+            " ",
+          );
+          document.getElementById("welcome-sub").textContent =
+            `Workflow status: ${status.replace(/_/g, " ")}`;
+        } catch (e) {
+          console.error("Progress load failed", e);
+          renderTimeline("REGISTRATION");
+        }
+      }
+
+      // ─────────────────────────────────────────
+      // DOCUMENT STATUS
+      // ─────────────────────────────────────────
+      const BADGE_MAP = {
+        VERIFIED:
+          '<span class="badge verified"><i class="fa-solid fa-circle-check"></i> Verified</span>',
+        PENDING:
+          '<span class="badge pending"><i class="fa-solid fa-clock"></i> Pending</span>',
+        REJECTED:
+          '<span class="badge rejected"><i class="fa-solid fa-circle-xmark"></i> Rejected</span>',
+        MISSING:
+          '<span class="badge missing"><i class="fa-regular fa-circle"></i> Missing</span>',
+      };
+
+      async function loadDocumentStatus() {
+        if (!currentEmployeeId) return;
+        const loading = document.getElementById("doc-loading");
+        const table = document.getElementById("doc-table");
+        const empty = document.getElementById("doc-empty");
+        const tbody = document.getElementById("doc-tbody");
+
+        loading.style.display = "block";
+        table.style.display = "none";
+        empty.style.display = "none";
+
+        try {
+          const data = await api(
+            "GET",
+            `/employee/document-status/${currentEmployeeId}`,
+          );
+          const docs = data.documents || (Array.isArray(data) ? data : []);
+
+          loading.style.display = "none";
+          if (!docs.length) {
+            empty.style.display = "block";
+            return;
+          }
+
+          tbody.innerHTML = docs
+            .map(
+              (d) => `
+      <tr>
+        <td><i class="fa-solid fa-file" style="color:var(--muted);margin-right:8px"></i>${escText(d.documentType || d.name || "—")}</td>
+        <td>${BADGE_MAP[(d.status || "").toUpperCase()] || BADGE_MAP["MISSING"]}</td>
+      </tr>`,
+            )
+            .join("");
+          table.style.display = "table";
+        } catch (e) {
+          loading.style.display = "none";
+          const p = empty.querySelector("p");
+          if (p) p.textContent = "Unable to load document status.";
+          empty.style.display = "block";
+        }
+      }
+
+      // Safe text escaping for DOM insertion
+      function escText(str) {
+        const el = document.createElement("span");
+        el.textContent = str;
+        return el.innerHTML;
+      }
+
+      // ─────────────────────────────────────────
+      // UPLOAD CARDS
+      // ─────────────────────────────────────────
+      function buildUploadCards() {
+        const grid = document.getElementById("upload-grid");
+        grid.innerHTML = DOC_TYPES.map(
+          (doc) => `
+    <div class="upload-item" id="card-${doc.id}">
+      <div class="doc-icon"><i class="fa-solid ${doc.icon}"></i></div>
+      <div class="doc-name">${doc.name}</div>
+      <div class="file-chooser">
+        <input type="file" id="file-${doc.id}" accept="${doc.accept}" />
+        <div class="file-label"><i class="fa-solid fa-paperclip"></i> Choose file</div>
+      </div>
+      <div class="filename-display" id="fname-${doc.id}">No file selected</div>
+      <div class="upload-progress" id="prog-wrap-${doc.id}">
+        <div class="upload-progress-fill" id="prog-${doc.id}" style="width:0%"></div>
+      </div>
+      <button class="btn-upload" id="btn-${doc.id}" disabled>
+        <i class="fa-solid fa-arrow-up-from-bracket"></i> Upload
+      </button>
+      <div class="upload-status" id="status-${doc.id}"></div>
+    </div>`,
+        ).join("");
+
+        // Attach event listeners (FIX CS-4: use addEventListener not inline onclick)
+        DOC_TYPES.forEach((doc) => {
+          document
+            .getElementById(`file-${doc.id}`)
+            .addEventListener("change", function () {
+              onFileChange(doc.id, this);
+            });
+          document
+            .getElementById(`btn-${doc.id}`)
+            .addEventListener("click", () => uploadDoc(doc.id));
+        });
+      }
+
+      function onFileChange(docId, input) {
+        const file = input.files[0];
+        const btn = document.getElementById(`btn-${docId}`);
+        const display = document.getElementById(`fname-${docId}`);
+        const status = document.getElementById(`status-${docId}`);
+
+        // FIX L-4: Reset progress state on new file selection
+        document.getElementById(`prog-wrap-${docId}`).style.display = "none";
+        document.getElementById(`prog-${docId}`).style.width = "0%";
+        status.textContent = "";
+
+        if (!file) {
+          btn.disabled = true;
+          display.textContent = "No file selected";
+          return;
+        }
+
+        const maxMB = 10;
+        if (file.size > maxMB * 1024 * 1024) {
+          showToast(`File exceeds ${maxMB}MB limit.`, "error");
+          input.value = "";
+          display.textContent = "No file selected";
+          btn.disabled = true;
+          return;
+        }
+        display.textContent = file.name;
+        btn.disabled = false;
+      }
+
+      async function uploadDoc(docId) {
+        const input = document.getElementById(`file-${docId}`);
+        const btn = document.getElementById(`btn-${docId}`);
+        const status = document.getElementById(`status-${docId}`);
+        const progWrap = document.getElementById(`prog-wrap-${docId}`);
+        const prog = document.getElementById(`prog-${docId}`);
+        const file = input.files[0];
+        if (!file) return;
+
+        // FIX API-3: Resolve contentType once and use consistently for both presign and PUT
+        const contentType = file.type || "application/octet-stream";
+
+        btn.disabled = true;
+        status.style.color = "var(--muted)";
+        status.textContent = "Requesting upload URL…";
+        progWrap.style.display = "block";
+        prog.style.width = "10%";
+
+        try {
+          // Step 1: get presigned URL
+          const res = await api("POST", "/employee/upload", {
+            employeeId: currentEmployeeId,
+            documentType: docId,
+            fileName: file.name,
+            contentType, // FIX API-3: single resolved value
+          });
+
+          const presignedUrl = res.uploadUrl || res.presignedUrl || res.url;
+          if (!presignedUrl) throw new Error("No presigned URL returned.");
+
+          status.textContent = "Uploading to S3…";
+          prog.style.width = "40%";
+
+          // Step 2: PUT to S3
+          const s3Res = await fetch(presignedUrl, {
+            method: "PUT",
+            headers: { "Content-Type": contentType }, // FIX API-3: same value used here
+            body: file,
+          });
+          if (!s3Res.ok) {
+            // Try to surface S3 XML error for debugging
+            const errText = await s3Res.text().catch(() => "");
+            console.error("S3 error response:", errText);
+            throw new Error(`S3 upload failed (HTTP ${s3Res.status})`);
+          }
+
+          prog.style.width = "100%";
+          status.style.color = "var(--success)";
+          status.textContent = "✓ Uploaded successfully";
+          input.value = "";
+          document.getElementById(`fname-${docId}`).textContent =
+            "No file selected";
+
+          showToast(
+            `${DOC_TYPES.find((d) => d.id === docId).name} uploaded!`,
+            "success",
+          );
+          setTimeout(() => {
+            loadDocumentStatus();
+            loadProgress();
+          }, 1500);
+        } catch (e) {
+          status.style.color = "var(--danger)";
+          status.textContent = "Upload failed. Try again.";
+          prog.style.width = "0%";
+          showToast("Upload failed: " + e.message, "error");
+          btn.disabled = false;
+        } finally {
+          setTimeout(() => {
+            progWrap.style.display = "none";
+            prog.style.width = "0%";
+          }, 2000);
+        }
+      }
+
+      // ─────────────────────────────────────────
+      // POLICY SIGN-OFF
+      // FIX H-4: Explicit state management — no ambiguous finally-only cleanup
+      // ─────────────────────────────────────────
+      function initPolicyListeners() {
+        const it = document.getElementById("it-policy");
+        const hr = document.getElementById("hr-policy");
+        const btn = document.getElementById("policy-btn");
+        const onChange = () => {
+          btn.disabled = !(it.checked && hr.checked);
+        };
+        it.addEventListener("change", onChange);
+        hr.addEventListener("change", onChange);
+      }
+
+      document
+        .getElementById("policy-btn")
+        .addEventListener("click", submitPolicy);
+
+      async function submitPolicy() {
+        const btn = document.getElementById("policy-btn");
+        const spn = document.getElementById("policy-spinner");
+        const txt = document.getElementById("policy-text");
+        const icon = document.getElementById("policy-icon");
+
+        btn.disabled = true;
+        spn.style.display = "block";
+        icon.style.display = "none";
+        txt.textContent = "Submitting…";
+
+        try {
+          await api("POST", "/employee/policy-signoff", {
+            employeeId: currentEmployeeId,
+            agreedToITPolicy: true,
+            agreedToHRPolicy: true,
+            signatureTimestamp: new Date().toISOString(),
+          });
+
+          // FIX H-4: explicit state cleanup in success path
+          spn.style.display = "none";
+          icon.className = "fa-solid fa-circle-check";
+          icon.style.display = "inline";
+          txt.textContent = "Policies Signed";
+
+          // FIX FI-5: Show success banner, hide form
+          const banner = document.getElementById("policy-success-banner");
+          const dateSpan = document.getElementById("policy-signed-date");
+          dateSpan.textContent = new Date().toLocaleDateString(undefined, {
+            dateStyle: "medium",
+          });
+          banner.style.display = "flex";
+          document.getElementById("policy-form-section").style.display = "none";
+
+          showToast("Policy sign-off submitted!", "success");
+          setTimeout(() => loadProgress(), 1500);
+        } catch (e) {
+          // FIX H-4: explicit state cleanup in error path
+          spn.style.display = "none";
+          icon.style.display = "inline";
+          txt.textContent = "Submit Policy Sign-Off";
+          btn.disabled = false;
+          showToast("Policy submission failed: " + e.message, "error");
+        }
+      }
+
+      // ─────────────────────────────────────────
+      // REFRESH DASHBOARD
+      // ─────────────────────────────────────────
+      async function refreshDashboard() {
+        const btn = document.getElementById("btn-refresh-dashboard");
+        const icon = document.getElementById("refresh-icon");
+
+        btn.disabled = true;
+        icon.classList.add("fa-spin-refresh");
+
+        try {
+          await Promise.all([loadProgress(), loadDocumentStatus()]);
+          showToast("Dashboard refreshed.", "success");
+        } catch (e) {
+          showToast("Refresh failed: " + e.message, "error");
+        } finally {
+          icon.classList.remove("fa-spin-refresh");
+          btn.disabled = false;
+        }
+      }
+
+      document
+        .getElementById("btn-refresh-dashboard")
+        .addEventListener("click", refreshDashboard);
+
+      // ─────────────────────────────────────────
+      // INIT
+      // FIX C-3: No hardcoded 'EMP001' fallback — missing ID is a fatal auth error
+      // FIX H-5: consistent token key usage via updated getToken()/getEmployeeId()
+      // ─────────────────────────────────────────
+      document.getElementById("logout-btn").addEventListener("click", logout);
+
+      (async function init() {
+        const token = getToken();
+        if (!token) return;
+
+        try {
+          const profile = await api("GET", "/employee/profile");
+
+          currentEmployeeId = profile.employeeId;
+
+          localStorage.setItem("employeeId", currentEmployeeId);
+        } catch (e) {
+          console.error("Unable to load employee profile", e);
+          showToast("Unable to load employee profile.", "error");
+          return;
+        }
+
+        const name = getEmployeeName();
+
+        document.getElementById("nav-name").textContent = name;
+        document.getElementById("nav-avatar").textContent = name
+          .charAt(0)
+          .toUpperCase();
+        document.getElementById("welcome-msg").textContent =
+          `Welcome, ${name.split(" ")[0]}!`;
+
+        buildUploadCards();
+        initPolicyListeners();
+
+        loadProgress();
+        loadDocumentStatus();
+      })();
+    </script>
+  </body>
+</html>

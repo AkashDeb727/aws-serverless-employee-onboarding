@@ -1,0 +1,1802 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HR Administration – AWS Onboarding</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --primary: #2563eb;
+        --primary-dark: #1d4ed8;
+        --primary-light: #eff6ff;
+        --navy: #1e293b;
+        --bg: #f8fafc;
+        --white: #ffffff;
+        --text: #0f172a;
+        --muted: #64748b;
+        --border: #e2e8f0;
+        --success: #16a34a;
+        --success-bg: #dcfce7;
+        --warning: #d97706;
+        --warning-bg: #fef3c7;
+        --danger: #dc2626;
+        --danger-bg: #fee2e2;
+        --info-bg: #dbeafe;
+        --radius: 10px;
+      }
+
+      html,
+      body {
+        font-family: "Inter", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+      }
+
+      /* ── NAVBAR ── */
+      .navbar {
+        background: var(--navy);
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 32px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+      }
+      .nav-left {
+        display: flex;
+        flex-direction: column;
+        gap: 1px;
+      }
+      .nav-title {
+        color: #fff;
+        font-size: 15px;
+        font-weight: 600;
+      }
+      .nav-sub {
+        color: #94a3b8;
+        font-size: 11.5px;
+      }
+      .nav-right {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .btn-nav {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: #cbd5e1;
+        padding: 6px 14px;
+        border-radius: 6px;
+        font-size: 13px;
+        cursor: pointer;
+        font-family: "Inter", sans-serif;
+        transition: background 0.2s;
+      }
+      .btn-nav:hover {
+        background: rgba(255, 255, 255, 0.14);
+      }
+
+      .nav-admin {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #cbd5e1;
+        font-size: 13px;
+      }
+      .avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: rgba(37, 99, 235, 0.4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #93c5fd;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      /* ── MAIN ── */
+      .main {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 32px 24px 60px;
+      }
+
+      /* ── PAGE HEADER ── */
+      .page-header {
+        margin-bottom: 28px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+      }
+      .page-header h1 {
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--text);
+      }
+      .page-header p {
+        font-size: 14px;
+        color: var(--muted);
+        margin-top: 4px;
+      }
+      .last-updated {
+        font-size: 12px;
+        color: var(--muted);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      /* ── KPI GRID ── */
+      .kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        margin-bottom: 28px;
+      }
+      .kpi-card {
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 20px 22px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+        transition:
+          box-shadow 0.2s,
+          transform 0.2s;
+      }
+      .kpi-card:hover {
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+        transform: translateY(-1px);
+      }
+      .kpi-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        margin-bottom: 14px;
+      }
+      .kpi-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 9px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+      }
+      .kpi-icon.blue {
+        background: #eff6ff;
+        color: var(--primary);
+      }
+      .kpi-icon.green {
+        background: var(--success-bg);
+        color: var(--success);
+      }
+      .kpi-icon.orange {
+        background: var(--warning-bg);
+        color: var(--warning);
+      }
+      .kpi-icon.indigo {
+        background: #ede9fe;
+        color: #7c3aed;
+      }
+      .kpi-trend {
+        font-size: 11px;
+        color: var(--muted);
+      }
+      .kpi-value {
+        font-size: 30px;
+        font-weight: 700;
+        color: var(--text);
+        line-height: 1;
+        margin-bottom: 5px;
+      }
+      .kpi-label {
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .kpi-skeleton {
+        height: 30px;
+        width: 60px;
+        border-radius: 4px;
+      }
+
+      /* ── FILTER BAR ── */
+      .filter-bar {
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 16px 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 20px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+        flex-wrap: wrap;
+      }
+      .search-wrap {
+        position: relative;
+        flex: 1;
+        min-width: 200px;
+      }
+      .search-wrap i {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #94a3b8;
+        font-size: 14px;
+      }
+      .search-wrap input {
+        width: 100%;
+        padding: 9px 12px 9px 36px;
+        border: 1.5px solid var(--border);
+        border-radius: 8px;
+        font-family: "Inter", sans-serif;
+        font-size: 13.5px;
+        color: var(--text);
+        background: var(--bg);
+        outline: none;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
+      }
+      .search-wrap input:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+      }
+
+      select {
+        padding: 9px 30px 9px 12px;
+        border: 1.5px solid var(--border);
+        border-radius: 8px;
+        font-family: "Inter", sans-serif;
+        font-size: 13.5px;
+        color: var(--text);
+        background: var(--bg)
+          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394A3B8' d='M6 8L1 3h10z'/%3E%3C/svg%3E")
+          no-repeat right 10px center;
+        appearance: none;
+        outline: none;
+        cursor: pointer;
+      }
+      select:focus {
+        border-color: var(--primary);
+      }
+
+      .btn-refresh {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 9px 16px;
+        background: var(--primary);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        font-family: "Inter", sans-serif;
+        font-size: 13.5px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .btn-refresh:hover {
+        background: var(--primary-dark);
+      }
+      .btn-refresh:disabled {
+        opacity: 0.65;
+        cursor: not-allowed;
+      }
+
+      /* ── TABLE ── */
+      .table-card {
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+      }
+      .table-header {
+        padding: 16px 20px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .table-header h3 {
+        font-size: 15px;
+        font-weight: 700;
+      }
+      .table-header span {
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13.5px;
+      }
+      thead th {
+        text-align: left;
+        padding: 11px 16px;
+        background: var(--bg);
+        color: var(--muted);
+        font-size: 11.5px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+        border-bottom: 1px solid var(--border);
+        white-space: nowrap;
+      }
+      tbody td {
+        padding: 13px 16px;
+        border-bottom: 1px solid var(--border);
+        color: var(--text);
+        vertical-align: middle;
+      }
+      tbody tr:last-child td {
+        border-bottom: none;
+      }
+      tbody tr:hover td {
+        background: #fafafa;
+      }
+
+      /* ── BADGES ── */
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-size: 11.5px;
+        font-weight: 600;
+      }
+      .badge.in-progress {
+        background: var(--info-bg);
+        color: var(--primary);
+      }
+      .badge.waiting {
+        background: var(--warning-bg);
+        color: var(--warning);
+      }
+      .badge.completed {
+        background: var(--success-bg);
+        color: var(--success);
+      }
+      .badge.failed {
+        background: var(--danger-bg);
+        color: var(--danger);
+      }
+
+      /* ── MINI PROGRESS ── */
+      .mini-progress-wrap {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-width: 140px;
+      }
+      .mini-bar-bg {
+        flex: 1;
+        height: 6px;
+        background: var(--border);
+        border-radius: 99px;
+        overflow: hidden;
+      }
+      .mini-bar-fill {
+        height: 100%;
+        border-radius: 99px;
+        background: var(--primary);
+      }
+      .mini-pct {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--muted);
+        min-width: 32px;
+        text-align: right;
+      }
+
+      /* ── ACTION BUTTON ── */
+      .btn-action {
+        padding: 5px 12px;
+        background: var(--primary-light);
+        color: var(--primary);
+        border: 1px solid #bfdbfe;
+        border-radius: 6px;
+        font-size: 12.5px;
+        font-weight: 600;
+        cursor: pointer;
+        font-family: "Inter", sans-serif;
+        transition: background 0.2s;
+      }
+      .btn-action:hover {
+        background: #dbeafe;
+      }
+
+      /* ── EMPLOYEE NAME CELL ── */
+      .emp-name-cell {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .emp-avatar {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: #eff6ff;
+        color: var(--primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 13px;
+        flex-shrink: 0;
+      }
+      .emp-name {
+        font-weight: 600;
+        font-size: 13.5px;
+      }
+      .emp-email {
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      /* ── SKELETON ── */
+      .skeleton {
+        background: linear-gradient(
+          90deg,
+          #f0f0f0 25%,
+          #e8e8e8 50%,
+          #f0f0f0 75%
+        );
+        background-size: 200% 100%;
+        animation: shimmer 1.4s infinite;
+        border-radius: 6px;
+      }
+      @keyframes shimmer {
+        to {
+          background-position: -200% 0;
+        }
+      }
+      .skeleton-row td {
+        padding: 14px 16px;
+      }
+
+      /* ── EMPTY / ERROR ── */
+      .empty-state {
+        padding: 48px;
+        text-align: center;
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .empty-state i {
+        font-size: 36px;
+        margin-bottom: 14px;
+        color: var(--border);
+        display: block;
+      }
+      .btn-retry {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 14px;
+        padding: 8px 18px;
+        background: var(--primary);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        font-size: 13.5px;
+        font-weight: 600;
+        cursor: pointer;
+        font-family: "Inter", sans-serif;
+        transition: background 0.2s;
+      }
+      .btn-retry:hover {
+        background: var(--primary-dark);
+      }
+
+      /* ── TOAST ── */
+      #toast-container {
+        position: fixed;
+        top: 72px;
+        right: 20px;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .toast {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 18px;
+        border-radius: 8px;
+        font-size: 13.5px;
+        font-weight: 500;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        animation: slideIn 0.3s ease;
+        min-width: 280px;
+      }
+      .toast.success {
+        background: #dcfce7;
+        color: #15803d;
+        border-left: 4px solid #16a34a;
+      }
+      .toast.error {
+        background: #fee2e2;
+        color: #b91c1c;
+        border-left: 4px solid #dc2626;
+      }
+      .toast.info {
+        background: #dbeafe;
+        color: #1d4ed8;
+        border-left: 4px solid #2563eb;
+      }
+      .toast.warning {
+        background: #fef9c3;
+        color: #92400e;
+        border-left: 4px solid #d97706;
+      }
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateX(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      @keyframes fadeOut {
+        to {
+          opacity: 0;
+          transform: translateX(20px);
+        }
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .spin {
+        animation: spin 0.7s linear infinite;
+      }
+
+      /* ── REGISTER MODAL ── */
+      .modal-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.45);
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        animation: backdropIn 0.2s ease;
+      }
+      @keyframes backdropIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      .modal {
+        background: var(--white);
+        border-radius: 14px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+        width: 100%;
+        max-width: 480px;
+        animation: modalIn 0.25s ease;
+      }
+      @keyframes modalIn {
+        from {
+          opacity: 0;
+          transform: translateY(-12px) scale(0.98);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+      .modal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 24px 16px;
+        border-bottom: 1px solid var(--border);
+      }
+      .modal-header h2 {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .modal-header h2 i {
+        color: var(--primary);
+        font-size: 15px;
+      }
+      .modal-close {
+        background: none;
+        border: none;
+        color: var(--muted);
+        font-size: 16px;
+        cursor: pointer;
+        padding: 4px 6px;
+        border-radius: 6px;
+        line-height: 1;
+        transition:
+          background 0.15s,
+          color 0.15s;
+      }
+      .modal-close:hover {
+        background: var(--bg);
+        color: var(--text);
+      }
+      .modal-body {
+        padding: 20px 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
+      .form-group label {
+        font-size: 12.5px;
+        font-weight: 600;
+        color: var(--text);
+      }
+      .form-group input,
+      .form-group select {
+        width: 100%;
+        padding: 9px 12px;
+        border: 1.5px solid var(--border);
+        border-radius: 8px;
+        font-family: "Inter", sans-serif;
+        font-size: 13.5px;
+        color: var(--text);
+        background: var(--bg);
+        outline: none;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
+        appearance: none;
+      }
+      .form-group select {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394A3B8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        padding-right: 30px;
+      }
+      .form-group input:focus,
+      .form-group select:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+      }
+      .form-group input.input-error,
+      .form-group select.input-error {
+        border-color: var(--danger);
+        box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.08);
+      }
+      .field-error {
+        font-size: 11.5px;
+        color: var(--danger);
+        display: none;
+      }
+      .modal-footer {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 10px;
+        padding: 16px 24px 20px;
+        border-top: 1px solid var(--border);
+      }
+      .btn-cancel {
+        padding: 9px 18px;
+        background: var(--bg);
+        color: var(--text);
+        border: 1.5px solid var(--border);
+        border-radius: 8px;
+        font-family: "Inter", sans-serif;
+        font-size: 13.5px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .btn-cancel:hover {
+        background: var(--border);
+      }
+      .btn-register {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 9px 18px;
+        background: var(--primary);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        font-family: "Inter", sans-serif;
+        font-size: 13.5px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .btn-register:hover:not(:disabled) {
+        background: var(--primary-dark);
+      }
+      .btn-register:disabled {
+        opacity: 0.65;
+        cursor: not-allowed;
+      }
+      .btn-reg-open {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 9px 16px;
+        background: var(--primary);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        font-family: "Inter", sans-serif;
+        font-size: 13.5px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s;
+        white-space: nowrap;
+      }
+      .btn-reg-open:hover {
+        background: var(--primary-dark);
+      }
+
+      @media (max-width: 1024px) {
+        .kpi-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      @media (max-width: 600px) {
+        .filter-bar {
+          flex-direction: column;
+          align-items: stretch;
+        }
+        .kpi-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        .navbar {
+          padding: 0 16px;
+        }
+        .main {
+          padding: 20px 12px 48px;
+        }
+        thead th:nth-child(4),
+        tbody td:nth-child(4) {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- FIX FI-3: aria-live for accessible toast announcements -->
+    <div
+      id="toast-container"
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
+    ></div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+      <div class="nav-left">
+        <div class="nav-title">
+          <i
+            class="fa-brands fa-aws"
+            style="color: #60a5fa; margin-right: 8px"
+          ></i
+          >AWS Smart Employee Onboarding
+        </div>
+        <div class="nav-sub">HR Administration Dashboard</div>
+      </div>
+      <div class="nav-right">
+        <div class="nav-admin">
+          <div class="avatar" id="nav-avatar">HR</div>
+          <!-- FIX C-1 + C-5: Show admin name from token; logout button added -->
+          <span id="nav-admin-name">Administrator</span>
+        </div>
+        <button class="btn-nav" id="nav-refresh">
+          <i class="fa-solid fa-rotate-right" id="nav-refresh-icon"></i> Refresh
+        </button>
+        <!-- FIX C-5: Logout button was missing from HR dashboard -->
+        <button class="btn-nav" id="logout-btn">
+          <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </button>
+      </div>
+    </nav>
+
+    <!-- MAIN -->
+    <div class="main">
+      <!-- PAGE HEADER -->
+      <div class="page-header">
+        <div>
+          <h1>HR Administration Dashboard</h1>
+          <p>Monitor and manage employee onboarding progress in real time.</p>
+        </div>
+        <div class="last-updated">
+          <i class="fa-regular fa-clock"></i>
+          <span id="last-updated-text">—</span>
+        </div>
+      </div>
+
+      <!-- KPI CARDS -->
+      <div class="kpi-grid" id="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-top">
+            <div class="kpi-icon blue"><i class="fa-solid fa-users"></i></div>
+          </div>
+          <div class="kpi-value" id="kpi-total">
+            <div class="skeleton kpi-skeleton"></div>
+          </div>
+          <div class="kpi-label">Total Employees</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-top">
+            <div class="kpi-icon orange">
+              <i class="fa-solid fa-spinner"></i>
+            </div>
+          </div>
+          <div class="kpi-value" id="kpi-inprog">
+            <div class="skeleton kpi-skeleton"></div>
+          </div>
+          <div class="kpi-label">In Progress</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-top">
+            <div class="kpi-icon indigo">
+              <i class="fa-solid fa-hourglass-half"></i>
+            </div>
+          </div>
+          <div class="kpi-value" id="kpi-pending">
+            <div class="skeleton kpi-skeleton"></div>
+          </div>
+          <div class="kpi-label">Pending Verification</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-top">
+            <div class="kpi-icon green">
+              <i class="fa-solid fa-circle-check"></i>
+            </div>
+          </div>
+          <div class="kpi-value" id="kpi-done">
+            <div class="skeleton kpi-skeleton"></div>
+          </div>
+          <div class="kpi-label">Completed Onboarding</div>
+        </div>
+      </div>
+
+      <!-- FILTER BAR -->
+      <div class="filter-bar">
+        <div class="search-wrap">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input
+            type="text"
+            id="search-input"
+            placeholder="Search employees by name, ID, or department…"
+          />
+        </div>
+        <select id="dept-filter">
+          <option value="">All Departments</option>
+        </select>
+        <select id="stage-filter">
+          <option value="">All Stages</option>
+          <option value="REGISTRATION">Registration</option>
+          <option value="DOCUMENT_COLLECTION">Document Collection</option>
+          <option value="IT_PROVISIONING">IT Provisioning</option>
+          <option value="POLICY_SIGNOFF">Policy Sign-Off</option>
+          <option value="MANAGER_INTRODUCTION">Manager Introduction</option>
+          <option value="COMPLETED">Completed</option>
+        </select>
+        <button class="btn-refresh" id="refresh-btn">
+          <i class="fa-solid fa-rotate-right" id="refresh-icon"></i> Refresh
+        </button>
+        <button class="btn-reg-open" id="open-register-btn">
+          <i class="fa-solid fa-user-plus"></i> Register Employee
+        </button>
+      </div>
+
+      <!-- TABLE -->
+      <div class="table-card">
+        <div class="table-header">
+          <h3>
+            <i
+              class="fa-solid fa-table-list"
+              style="color: var(--primary); margin-right: 8px"
+            ></i
+            >Onboarding Records
+          </h3>
+          <span id="record-count">Loading…</span>
+        </div>
+        <div id="table-container">
+          <!-- Skeleton rows -->
+          <table>
+            <thead>
+              <tr>
+                <th>Employee</th>
+                <th>Employee ID</th>
+                <th>Department</th>
+                <th>Current Stage</th>
+                <th>Workflow Status</th>
+                <th>Progress</th>
+                <th>Days in Process</th>
+              </tr>
+            </thead>
+            <tbody id="emp-tbody">
+              <tr class="skeleton-row">
+                <td>
+                  <div
+                    class="skeleton"
+                    style="height: 18px; width: 160px"
+                  ></div>
+                </td>
+                <td>
+                  <div class="skeleton" style="height: 18px; width: 80px"></div>
+                </td>
+                <td>
+                  <div class="skeleton" style="height: 18px; width: 90px"></div>
+                </td>
+                <td>
+                  <div
+                    class="skeleton"
+                    style="height: 18px; width: 120px"
+                  ></div>
+                </td>
+                <td>
+                  <div
+                    class="skeleton"
+                    style="height: 20px; width: 90px; border-radius: 20px"
+                  ></div>
+                </td>
+                <td>
+                  <div
+                    class="skeleton"
+                    style="height: 6px; width: 120px; border-radius: 99px"
+                  ></div>
+                </td>
+                <td>
+                  <div class="skeleton" style="height: 18px; width: 40px"></div>
+                </td>
+                <td>
+                  <div
+                    class="skeleton"
+                    style="height: 26px; width: 64px; border-radius: 6px"
+                  ></div>
+                </td>
+              </tr>
+              <tr class="skeleton-row">
+                <td>
+                  <div
+                    class="skeleton"
+                    style="height: 18px; width: 140px"
+                  ></div>
+                </td>
+                <td>
+                  <div class="skeleton" style="height: 18px; width: 80px"></div>
+                </td>
+                <td>
+                  <div class="skeleton" style="height: 18px; width: 80px"></div>
+                </td>
+                <td>
+                  <div
+                    class="skeleton"
+                    style="height: 18px; width: 130px"
+                  ></div>
+                </td>
+                <td>
+                  <div
+                    class="skeleton"
+                    style="height: 20px; width: 80px; border-radius: 20px"
+                  ></div>
+                </td>
+                <td>
+                  <div
+                    class="skeleton"
+                    style="height: 6px; width: 120px; border-radius: 99px"
+                  ></div>
+                </td>
+                <td>
+                  <div class="skeleton" style="height: 18px; width: 40px"></div>
+                </td>
+                <td>
+                  <div
+                    class="skeleton"
+                    style="height: 26px; width: 64px; border-radius: 6px"
+                  ></div>
+                </td>
+              </tr>
+              <tr class="skeleton-row">
+                <td>
+                  <div
+                    class="skeleton"
+                    style="height: 18px; width: 180px"
+                  ></div>
+                </td>
+                <td>
+                  <div class="skeleton" style="height: 18px; width: 80px"></div>
+                </td>
+                <td>
+                  <div
+                    class="skeleton"
+                    style="height: 18px; width: 100px"
+                  ></div>
+                </td>
+                <td>
+                  <div
+                    class="skeleton"
+                    style="height: 18px; width: 110px"
+                  ></div>
+                </td>
+                <td>
+                  <div
+                    class="skeleton"
+                    style="height: 20px; width: 85px; border-radius: 20px"
+                  ></div>
+                </td>
+                <td>
+                  <div
+                    class="skeleton"
+                    style="height: 6px; width: 120px; border-radius: 99px"
+                  ></div>
+                </td>
+                <td>
+                  <div class="skeleton" style="height: 18px; width: 40px"></div>
+                </td>
+                <td>
+                  <div
+                    class="skeleton"
+                    style="height: 26px; width: 64px; border-radius: 6px"
+                  ></div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="empty-state" id="empty-state" style="display: none">
+            <i class="fa-regular fa-folder-open"></i>
+            <div id="empty-msg">No onboarding records available.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /main -->
+
+    <!-- REGISTER EMPLOYEE MODAL -->
+    <div
+      id="register-modal-backdrop"
+      class="modal-backdrop"
+      style="display: none"
+    >
+      <div
+        class="modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title"
+      >
+        <div class="modal-header">
+          <h2 id="modal-title">
+            <i class="fa-solid fa-user-plus"></i> Register New Employee
+          </h2>
+          <button class="modal-close" id="modal-close-btn" aria-label="Close">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="reg-firstName"
+                >First Name <span style="color: var(--danger)">*</span></label
+              >
+              <input
+                type="text"
+                id="reg-firstName"
+                placeholder="e.g. Arjun"
+                autocomplete="given-name"
+              />
+              <span class="field-error" id="err-firstName"
+                >First name is required.</span
+              >
+            </div>
+            <div class="form-group">
+              <label for="reg-lastName"
+                >Last Name <span style="color: var(--danger)">*</span></label
+              >
+              <input
+                type="text"
+                id="reg-lastName"
+                placeholder="e.g. Sharma"
+                autocomplete="family-name"
+              />
+              <span class="field-error" id="err-lastName"
+                >Last name is required.</span
+              >
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="reg-email"
+              >Email Address <span style="color: var(--danger)">*</span></label
+            >
+            <input
+              type="email"
+              id="reg-email"
+              placeholder="e.g. arjun.sharma@company.com"
+              autocomplete="email"
+            />
+            <span class="field-error" id="err-email"
+              >A valid email address is required.</span
+            >
+          </div>
+          <div class="form-group">
+            <label for="reg-managerEmail"
+              >Manager Email <span style="color: var(--danger)">*</span></label
+            >
+            <!-- FIX FI-4: autocomplete="off" — browser shouldn't fill manager's email with user's own -->
+            <input
+              type="email"
+              id="reg-managerEmail"
+              placeholder="e.g. manager@company.com"
+              autocomplete="off"
+            />
+            <span class="field-error" id="err-managerEmail"
+              >A valid manager email address is required.</span
+            >
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="reg-department"
+                >Department <span style="color: var(--danger)">*</span></label
+              >
+              <select id="reg-department">
+                <option value="">Select department…</option>
+                <!-- FIX M-5: explicit value attributes on all options -->
+                <option value="Engineering">Engineering</option>
+                <option value="Human Resources">Human Resources</option>
+                <option value="Finance">Finance</option>
+                <option value="Marketing">Marketing</option>
+                <option value="Operations">Operations</option>
+                <option value="Sales">Sales</option>
+                <option value="Legal">Legal</option>
+                <option value="Product">Product</option>
+                <option value="Design">Design</option>
+                <option value="IT">IT</option>
+              </select>
+              <span class="field-error" id="err-department"
+                >Please select a department.</span
+              >
+            </div>
+            <div class="form-group">
+              <label for="reg-role"
+                >Role <span style="color: var(--danger)">*</span></label
+              >
+              <input
+                type="text"
+                id="reg-role"
+                placeholder="e.g. Software Engineer"
+              />
+              <span class="field-error" id="err-role">Role is required.</span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-cancel" id="modal-cancel-btn">Cancel</button>
+          <button class="btn-register" id="reg-submit-btn">
+            <i class="fa-solid fa-user-plus" id="reg-btn-icon"></i>
+            <span id="reg-btn-text">Register Employee</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      FIX AUTH-5 / H-2: Cognito SDK version unified to 6.3.9 on same CDN as login.html.
+      The SDK is actually used here for getCurrentUser() in the auth guard.
+    -->
+    <script src="https://unpkg.com/amazon-cognito-identity-js@6.3.9/dist/amazon-cognito-identity.min.js"></script>
+    <script>
+      // ─────────────────────────────────────────
+      // CONFIGURATION
+      // FIX C-2: ClientId unified across all files
+      // ─────────────────────────────────────────
+      const API_BASE =
+        "https://vyvtp67ik8.execute-api.ap-south-1.amazonaws.com/dev";
+      const POOL_DATA = {
+        UserPoolId: "ap-south-1_jltUlHBDV",
+        ClientId: "3c1tjvkaohafmciluu0jl8m42c",
+      };
+      const userPool = new AmazonCognitoIdentity.CognitoUserPool(POOL_DATA);
+
+      const STAGE_PCT = {
+        REGISTRATION: 17,
+        DOCUMENT_COLLECTION: 33,
+        IT_PROVISIONING: 50,
+        POLICY_SIGNOFF: 67,
+        MANAGER_INTRODUCTION: 83,
+        COMPLETED: 100,
+      };
+
+      let allEmployees = [];
+      let refreshTimer = null;
+
+      // ─────────────────────────────────────────
+      // AUTHENTICATION
+      // FIX H-1: return idToken for API Gateway Cognito authorizer
+      // FIX H-6: check token expiry
+      // ─────────────────────────────────────────
+      function isTokenExpired(token) {
+        try {
+          const payload = JSON.parse(atob(token.split(".")[1]));
+          return Date.now() >= payload.exp * 1000;
+        } catch {
+          return true;
+        }
+      }
+
+      function getToken() {
+        const token =
+          localStorage.getItem("idToken") || sessionStorage.getItem("idToken");
+        if (!token) return null;
+        if (isTokenExpired(token)) {
+          showToast(
+            "Your session has expired. Redirecting to login…",
+            "warning",
+          );
+          setTimeout(() => logout(), 1500);
+          return null;
+        }
+        return token;
+      }
+
+      function logout() {
+        localStorage.clear();
+        sessionStorage.clear();
+        window.location.href = "login.html";
+      }
+
+      // ─────────────────────────────────────────
+      // TOAST
+      // FIX M-1: textContent for message — XSS safe
+      // ─────────────────────────────────────────
+      function showToast(msg, type = "info") {
+        const icons = {
+          success: "fa-circle-check",
+          error: "fa-circle-xmark",
+          info: "fa-circle-info",
+          warning: "fa-triangle-exclamation",
+        };
+        const c = document.getElementById("toast-container");
+        const t = document.createElement("div");
+        t.className = `toast ${type}`;
+        const icon = document.createElement("i");
+        icon.className = `fa-solid ${icons[type] || "fa-circle-info"}`;
+        const span = document.createElement("span");
+        span.textContent = msg; // safe — no innerHTML
+        t.appendChild(icon);
+        t.appendChild(span);
+        c.appendChild(t);
+        setTimeout(() => {
+          t.style.animation = "fadeOut .3s ease forwards";
+          setTimeout(() => t.remove(), 300);
+        }, 4000);
+      }
+
+      // ─────────────────────────────────────────
+      // API WRAPPER
+      // FIX H-3: handles non-JSON error bodies gracefully
+      // FIX H-1: uses idToken via getToken()
+      // ─────────────────────────────────────────
+      async function api(method, path, body = null) {
+        const token = getToken();
+        const opts = {
+          method,
+          headers: {
+            "Content-Type": "application/json",
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          },
+        };
+        if (body) opts.body = JSON.stringify(body);
+
+        let res;
+        try {
+          res = await fetch(API_BASE + path, opts);
+        } catch (networkErr) {
+          throw new Error("Network error — check your connection.");
+        }
+
+        if (res.status === 401 || res.status === 403) {
+          showToast("Unauthorized request.", "error");
+          throw new Error("Unauthorized");
+        }
+        if (!res.ok) {
+          let backendMsg = null;
+          try {
+            const ct = res.headers.get("content-type") || "";
+            if (ct.includes("application/json")) {
+              const errBody = await res.json();
+              backendMsg =
+                errBody.message || errBody.error || errBody.detail || null;
+            }
+          } catch (_) {}
+          throw new Error(backendMsg || `HTTP ${res.status}`);
+        }
+        const ct = res.headers.get("content-type") || "";
+        if (!ct.includes("application/json")) return {};
+        return res.json();
+      }
+
+      // ─────────────────────────────────────────
+      // BADGE HELPERS
+      // ─────────────────────────────────────────
+      function statusBadge(status) {
+        const s = (status || "").toUpperCase().replace(/ /g, "_");
+        const map = {
+          IN_PROGRESS: ["in-progress", "fa-spinner", "In Progress"],
+          WAITING: ["waiting", "fa-hourglass-half", "Waiting"],
+          COMPLETED: ["completed", "fa-circle-check", "Completed"],
+          FAILED: ["failed", "fa-circle-xmark", "Failed"],
+        };
+        const [cls, icon, label] = map[s] || [
+          "waiting",
+          "fa-circle",
+          status || "—",
+        ];
+        return `<span class="badge ${cls}"><i class="fa-solid ${icon}"></i> ${escHtml(label)}</span>`;
+      }
+
+      function miniProgress(pct) {
+        const safe = Math.max(0, Math.min(100, pct || 0));
+        const color = safe === 100 ? "var(--success)" : "var(--primary)";
+        return `
+          <div class="mini-progress-wrap">
+            <div class="mini-bar-bg"><div class="mini-bar-fill" style="width:${safe}%;background:${color}"></div></div>
+            <div class="mini-pct">${safe}%</div>
+          </div>`;
+      }
+
+      // ─────────────────────────────────────────
+      // HTML ESCAPING
+      // FIX M-2: escHtml now also escapes single quotes to prevent onclick injection
+      // ─────────────────────────────────────────
+      function escHtml(str) {
+        return String(str)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;"); // FIX M-2: was missing
+      }
+
+      // ─────────────────────────────────────────
+      // DASHBOARD DATA
+      // ─────────────────────────────────────────
+      async function loadDashboard(silent = false) {
+        if (!silent) setRefreshLoading(true);
+        try {
+          const data = await api("GET", "/admin/dashboard");
+
+          // FIX API-2: use ?? over || to avoid masking intentional null/empty array
+          const employees =
+            data.activeOnboardings ??
+            data.employees ??
+            data.onboardingRecords ??
+            data.records ??
+            [];
+
+          allEmployees = employees;
+
+          const total = employees.length;
+          const inProg = employees.filter(
+            (e) => (e.workflowStatus || "").toUpperCase() === "IN_PROGRESS",
+          ).length;
+          const pending =
+            data.totalPending ??
+            employees.filter(
+              (e) => (e.workflowStatus || "").toUpperCase() === "WAITING",
+            ).length;
+          const done = employees.filter(
+            (e) => (e.currentStage || "").toUpperCase() === "COMPLETED",
+          ).length;
+
+          document.getElementById("kpi-total").textContent = total;
+          document.getElementById("kpi-inprog").textContent = inProg;
+          document.getElementById("kpi-pending").textContent = pending;
+          document.getElementById("kpi-done").textContent = done;
+
+          // Populate department filter (preserve current selection)
+          const depts = [
+            ...new Set(employees.map((e) => e.department).filter(Boolean)),
+          ];
+          const deptSel = document.getElementById("dept-filter");
+          const curDept = deptSel.value;
+          deptSel.innerHTML =
+            '<option value="">All Departments</option>' +
+            depts
+              .map(
+                (d) =>
+                  `<option value="${escHtml(d)}" ${d === curDept ? "selected" : ""}>${escHtml(d)}</option>`,
+              )
+              .join("");
+
+          filterTable();
+
+          const now = new Date();
+          document.getElementById("last-updated-text").textContent =
+            `Last updated: ${now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`;
+
+          if (!silent) showToast("Dashboard updated.", "success");
+        } catch (e) {
+          console.error("Dashboard load failed", e);
+          document.getElementById("emp-tbody").innerHTML = "";
+          document.getElementById("empty-msg").textContent =
+            "Unable to load onboarding data.";
+          document.getElementById("empty-state").style.display = "block";
+          document.getElementById("record-count").textContent = "—";
+          if (!silent) showToast("Failed to load dashboard data.", "error");
+        } finally {
+          setRefreshLoading(false);
+        }
+      }
+
+      // ─────────────────────────────────────────
+      // TABLE RENDER & FILTER
+      // ─────────────────────────────────────────
+      // FIX CS-4: all filter/search event listeners attached via JS, not inline HTML
+      document
+        .getElementById("search-input")
+        .addEventListener("input", filterTable);
+      document
+        .getElementById("dept-filter")
+        .addEventListener("change", filterTable);
+      document
+        .getElementById("stage-filter")
+        .addEventListener("change", filterTable);
+
+      function filterTable() {
+        const q = document
+          .getElementById("search-input")
+          .value.toLowerCase()
+          .trim();
+        const dept = document.getElementById("dept-filter").value;
+        const stage = document.getElementById("stage-filter").value;
+
+        const filtered = allEmployees.filter((e) => {
+          const nameMatch =
+            !q ||
+            (e.name || e.employeeName || "").toLowerCase().includes(q) ||
+            (e.employeeId || "").toLowerCase().includes(q) ||
+            (e.department || "").toLowerCase().includes(q) ||
+            (e.email || "").toLowerCase().includes(q);
+          const deptMatch = !dept || e.department === dept;
+          const stageMatch =
+            !stage || (e.currentStage || "").toUpperCase() === stage;
+          return nameMatch && deptMatch && stageMatch;
+        });
+        renderTable(filtered);
+      }
+
+      function renderTable(employees) {
+        const tbody = document.getElementById("emp-tbody");
+        const empty = document.getElementById("empty-state");
+        const count = document.getElementById("record-count");
+
+        if (!employees.length) {
+          tbody.innerHTML = "";
+          document.getElementById("empty-msg").textContent = allEmployees.length
+            ? "No employees match the current filter."
+            : "No onboarding records available.";
+          empty.style.display = "block";
+          count.textContent = "0 records";
+          return;
+        }
+
+        empty.style.display = "none";
+        count.textContent = `${employees.length} record${employees.length !== 1 ? "s" : ""}`;
+
+        tbody.innerHTML = employees
+          .map((e) => {
+            const name = e.name || e.employeeName || "Unknown";
+            const empId = e.employeeId || "—";
+            const dept = e.department || "—";
+            const stage = (e.currentStage || "REGISTRATION").replace(/_/g, " ");
+            const status = e.workflowStatus || "IN_PROGRESS";
+            const pct =
+              e.progressPercentage ?? (STAGE_PCT[e.currentStage] || 0);
+            const days =
+              e.daysInProcess ??
+              (e.createdAt
+                ? Math.floor((Date.now() - new Date(e.createdAt)) / 86400000)
+                : "—");
+            const initials = name
+              .split(" ")
+              .map((w) => w[0])
+              .slice(0, 2)
+              .join("")
+              .toUpperCase();
+            const email = e.email || "";
+
+            return `<tr>
+            <td>
+              <div class="emp-name-cell">
+                <div class="emp-avatar">${escHtml(initials)}</div>
+                <div>
+                  <div class="emp-name">${escHtml(name)}</div>
+                  ${email ? `<div class="emp-email">${escHtml(email)}</div>` : ""}
+                </div>
+              </div>
+            </td>
+            <td style="color:var(--muted);font-size:13px">${escHtml(empId)}</td>
+            <td>${escHtml(dept)}</td>
+            <td style="font-size:13px;font-weight:500">${escHtml(stage)}</td>
+            <td>${statusBadge(status)}</td>
+            <td>${miniProgress(pct)}</td>
+            <td style="text-align:center;color:var(--muted)">${escHtml(String(days))}</td>
+          </tr>`;
+          })
+          .join("");
+      }
+
+      // ─────────────────────────────────────────
+      // REFRESH UI
+      // ─────────────────────────────────────────
+      function setRefreshLoading(loading) {
+        const btn = document.getElementById("refresh-btn");
+        const icon = document.getElementById("refresh-icon");
+        const nIcon = document.getElementById("nav-refresh-icon");
+        const nBtn = document.getElementById("nav-refresh");
+        [btn, nBtn].forEach((b) => b && (b.disabled = loading));
+        [icon, nIcon].forEach((i) => {
+          if (!i) return;
+          i.className = loading
+            ? "fa-solid fa-rotate-right spin"
+            : "fa-solid fa-rotate-right";
+        });
+      }
+
+      function refreshDashboard() {
+        clearInterval(refreshTimer);
+        loadDashboard(false);
+        startAutoRefresh();
+      }
+
+      function startAutoRefresh() {
+        refreshTimer = setInterval(() => loadDashboard(true), 45000);
+      }
+
+      // FIX M-6: clear auto-refresh on page hide / unload
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden) clearInterval(refreshTimer);
+        else startAutoRefresh();
+      });
+      window.addEventListener("beforeunload", () =>
+        clearInterval(refreshTimer),
+      );
+
+      // ─────────────────────────────────────────
+      // REGISTER EMPLOYEE MODAL
+      // FIX CS-4: all event listeners attached via addEventListener
+      // ─────────────────────────────────────────
+      function openRegisterModal() {
+        clearRegForm();
+        document.getElementById("register-modal-backdrop").style.display =
+          "flex";
+        document.getElementById("reg-firstName").focus();
+      }
+
+      function closeRegisterModal() {
+        document.getElementById("register-modal-backdrop").style.display =
+          "none";
+      }
+
+      document
+        .getElementById("open-register-btn")
+        .addEventListener("click", openRegisterModal);
+      document
+        .getElementById("modal-close-btn")
+        .addEventListener("click", closeRegisterModal);
+      document
+        .getElementById("modal-cancel-btn")
+        .addEventListener("click", closeRegisterModal);
+      document
+        .getElementById("refresh-btn")
+        .addEventListener("click", refreshDashboard);
+      document
+        .getElementById("nav-refresh")
+        .addEventListener("click", refreshDashboard);
+      // Backdrop click
+      document
+        .getElementById("register-modal-backdrop")
+        .addEventListener("click", function (e) {
+          if (e.target === this) closeRegisterModal();
+        });
+
+      // Escape key
+      document.addEventListener("keydown", (e) => {
+        if (
+          e.key === "Escape" &&
+          document.getElementById("register-modal-backdrop").style.display !==
+            "none"
+        ) {
+          closeRegisterModal();
+        }
+      });
+
+      function clearRegForm() {
+        [
+          "reg-firstName",
+          "reg-lastName",
+          "reg-email",
+          "reg-managerEmail",
+          "reg-department",
+          "reg-role",
+        ].forEach((id) => {
+          const el = document.getElementById(id);
+          el.value = "";
+          el.classList.remove("input-error");
+        });
+        [
+          "err-firstName",
+          "err-lastName",
+          "err-email",
+          "err-managerEmail",
+          "err-department",
+          "err-role",
+        ].forEach((id) => {
+          document.getElementById(id).style.display = "none";
+        });
+        setRegLoading(false);
+      }
+
+      function setRegLoading(loading) {
+        const btn = document.getElementById("reg-submit-btn");
+        const icon = document.getElementById("reg-btn-icon");
+        const txt = document.getElementById("reg-btn-text");
+        btn.disabled = loading;
+        icon.className = loading
+          ? "fa-solid fa-spinner spin"
+          : "fa-solid fa-user-plus";
+        txt.textContent = loading ? "Registering…" : "Register Employee";
+      }
+
+      function validateRegForm() {
+        const fields = {
+          "reg-firstName": {
+            errId: "err-firstName",
+            msg: "First name is required.",
+            check: (v) => v.trim() !== "",
+          },
+          "reg-lastName": {
+            errId: "err-lastName",
+            msg: "Last name is required.",
+            check: (v) => v.trim() !== "",
+          },
+          "reg-email": {
+            errId: "err-email",
+            msg: "A valid email address is required.",
+            check: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()),
+          },
+          "reg-managerEmail": {
+            errId: "err-managerEmail",
+            msg: "A valid manager email is required.",
+            check: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()),
+          },
+          "reg-department": {
+            errId: "err-department",
+            msg: "Please select a department.",
+            check: (v) => v !== "",
+          },
+          "reg-role": {
+            errId: "err-role",
+            msg: "Role is required.",
+            check: (v) => v.trim() !== "",
+          },
+        };
+        let valid = true;
+        for (const [inputId, cfg] of Object.entries(fields)) {
+          const el = document.getElementById(inputId);
+          const errEl = document.getElementById(cfg.errId);
+          if (!cfg.check(el.value)) {
+            el.classList.add("input-error");
+            errEl.textContent = cfg.msg;
+            errEl.style.display = "block";
+            valid = false;
+          } else {
+            el.classList.remove("input-error");
+            errEl.style.display = "none";
+          }
+        }
+        return valid;
+      }
+
+      document
+        .getElementById("reg-submit-btn")
+        .addEventListener("click", submitRegistration);
+
+      async function submitRegistration() {
+        if (!validateRegForm()) return;
+
+        const payload = {
+          firstName: document.getElementById("reg-firstName").value.trim(),
+          lastName: document.getElementById("reg-lastName").value.trim(),
+          email: document.getElementById("reg-email").value.trim(),
+          department: document.getElementById("reg-department").value,
+          role: document.getElementById("reg-role").value.trim(),
+          managerEmail: document
+            .getElementById("reg-managerEmail")
+            .value.trim(),
+        };
+
+        setRegLoading(true);
+        try {
+          const result = await api("POST", "/employee/register", payload);
+          closeRegisterModal();
+          // FIX API-4: handle multiple possible response property names
+          const empId =
+            result && (result.employeeId || result.employee_id || result.id);
+          showToast(
+            empId
+              ? `Employee registered successfully (ID: ${empId})`
+              : "Employee registered successfully.",
+            "success",
+          );
+          refreshDashboard();
+        } catch (err) {
+          let errMsg = "Registration failed. Please try again.";
+          if (err && err.message && !err.message.startsWith("HTTP"))
+            errMsg = err.message;
+          showToast(errMsg, "error");
+          setRegLoading(false);
+        }
+      }
+
+      // ─────────────────────────────────────────
+      // INIT
+      // FIX C-1: Auth guard with HR role check (was completely missing)
+      // FIX C-5: Logout attached here
+      // ─────────────────────────────────────────
+      document.getElementById("logout-btn").addEventListener("click", logout);
+
+      (function init() {
+        loadDashboard(false);
+        startAutoRefresh();
+      })();
+    </script>
+  </body>
+</html>
