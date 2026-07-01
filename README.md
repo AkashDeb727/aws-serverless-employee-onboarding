@@ -1,6 +1,6 @@
 # AWS Smart Employee Onboarding & Identity Service
 
-> **An event-driven, serverless employee onboarding platform built on AWS to automate identity creation, document collection, onboarding workflows, progress tracking, and employee onboarding using fully managed cloud services.**
+> **An event-driven, serverless employee onboarding platform built on AWS to automate employee identity management, document collection, workflow orchestration, and real-time onboarding progress tracking using fully managed cloud services.**
 
 ---
 
@@ -17,8 +17,6 @@
 - [Callback Pattern & Task Tokens](#callback-pattern--task-tokens)
 - [Database Design](#database-design)
 - [API Endpoints](#api-endpoints)
-- [Repository Structure](#repository-structure)
-- [Screenshots](#screenshots)
 - [Contributors](#contributors)
 
 ---
@@ -118,7 +116,7 @@ The architecture follows a serverless, event-driven design where all client requ
 
 ## AWS Services Used
 
-| AWS Service | Purpose | Implementation |
+| AWS Service | Purpose | Role in the Solution |
 |-------------|---------|----------------|
 | **Amazon API Gateway** | REST API Management | Serves as the single entry point for all frontend requests, routing HTTP APIs to the appropriate AWS Lambda functions. |
 | **AWS Lambda** | Serverless Compute | Executes the business logic for employee registration, document processing, progress tracking, policy sign-off, reminder emails, and dashboard operations. |
@@ -280,7 +278,7 @@ The Callback Pattern is implemented during user-driven onboarding stages where t
 
 **Document Collection**
 
-- The workflow pauses while the employee uploads the required onboarding documents.
+- The workflow pauses while the employee submits the required onboarding documents for verification.
 - After the documents are verified, the verification service returns the stored Task Token using the Step Functions **SendTaskSuccess** API.
 - The workflow automatically resumes and proceeds to the next onboarding stage.
 
@@ -318,7 +316,7 @@ The application uses **Amazon DynamoDB** as its primary NoSQL database to manage
 | **employee_onboarding_progress_tracking** | `employeeId` | Stores the employee's current onboarding stage, workflow status, stage history, and last updated timestamp for real-time progress tracking. |
 | **employee_onboarding_task_tokens** | `employeeId` | Stores AWS Step Functions Task Tokens used by callback states to pause and resume workflow execution after asynchronous employee or HR actions. |
 
-### Task Token Table
+### Workflow Callback Table
 
 The **employee_onboarding_task_tokens** table is used to support the AWS Step Functions **Callback Pattern**. When the workflow reaches a callback state, a unique Task Token is generated and stored for the corresponding employee. Once the required action is completed, the stored Task Token is retrieved and passed to the **SendTaskSuccess** API, allowing the workflow to resume from its paused state.
 
@@ -359,16 +357,6 @@ The application exposes a set of RESTful APIs through **Amazon API Gateway** to 
 | Method | Endpoint | Description |
 |---------|----------|-------------|
 | **GET** | `/admin/dashboard` | Retrieves employee onboarding statistics, workflow progress, and dashboard data for HR administrators. |
-
-### API Characteristics
-
-- RESTful API architecture implemented using **Amazon API Gateway**.
-- JSON-based request and response payloads.
-- Secure authentication and authorization using **Amazon Cognito**.
-- Backend processing powered by **AWS Lambda**.
-- Workflow orchestration integrated with **AWS Step Functions**.
-- Secure document uploads using **Amazon S3 Pre-Signed URLs**.
-- Cross-Origin Resource Sharing (CORS) enabled for frontend integration.
 
 ---
 
