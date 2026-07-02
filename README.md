@@ -11,6 +11,7 @@
 - [Solution Overview](#solution-overview)
 - [System Architecture](#system-architecture)
 - [Architecture Diagram](#architecture-diagram)
+- [Step Functions Workflow](#step-functions-workflow)
 - [AWS Services Used](#aws-services-used)
 - [Key Features](#key-features)
 - [Project Workflow](#project-workflow)
@@ -111,6 +112,24 @@ The following diagram illustrates the high-level architecture of the AWS Smart E
 </p>
 
 The architecture follows a serverless, event-driven design where all client requests are routed through Amazon API Gateway to AWS Lambda functions. AWS Step Functions orchestrate the complete onboarding workflow, coordinating employee registration, document collection, verification, IT provisioning, policy acknowledgements, and onboarding completion. Amazon DynamoDB stores application data, Amazon Cognito manages authentication, Amazon S3 stores uploaded documents and frontend assets, while Amazon SES and Amazon SNS handle email and notification services respectively.
+
+---
+
+## Step Functions Workflow
+
+The employee onboarding lifecycle is orchestrated using **AWS Step Functions**, enabling reliable workflow execution, state management, and asynchronous processing. The workflow coordinates each onboarding stage, pauses execution when waiting for employee actions using the **Callback Pattern**, and automatically resumes once the required task is completed using **Task Tokens**.
+
+<p align="center">
+  <img src="architecture/step-functions-workflow.png" alt="AWS Step Functions Workflow" width="100%">
+</p>
+
+### Workflow Highlights
+
+- Automates the complete employee onboarding lifecycle.
+- Coordinates AWS Lambda functions across each onboarding stage.
+- Implements the **Callback Pattern** with **Task Tokens** for asynchronous employee actions.
+- Supports document collection, verification, IT provisioning, policy sign-off, manager introduction, and onboarding completion.
+- Provides reliable state management, retries, and error handling for long-running workflows.
 
 ---
 
