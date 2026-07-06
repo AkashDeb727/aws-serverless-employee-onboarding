@@ -385,8 +385,8 @@ This project was developed as part of an **AWS Cloud Internship** through a coll
 
 | Team Member | Responsibilities |
 |------------|------------------|
-| **Ibrahim Ajmeri** | Employee registration, UUID generation, employee master data management, Amazon Cognito integration, welcome email automation using Amazon SES, and identity management services. |
-| **Rushi Sanku** | Secure document upload, Amazon S3 integration, pre-signed URL generation, document verification, document tracking, and HR notifications using Amazon SNS. |
+| **Rushi Sanku** | Employee registration, UUID generation, employee master data management, Amazon Cognito integration, welcome email automation using Amazon SES, and identity management services. |
+| **Ibrahim Ajmeri** | Secure document upload, Amazon S3 integration, pre-signed URL generation, document verification, document tracking, and HR notifications using Amazon SNS. |
 | **Akash Deb** | AWS Step Functions workflow orchestration, Callback Pattern implementation, Task Token management, onboarding progress tracking, reminder email automation using Amazon SES, Employee Portal, HR Dashboard, Policy Sign-Off API, Progress APIs, and final system integration. |
 
 The project was designed and implemented collaboratively, with each module independently developed and integrated into a unified serverless employee onboarding solution.
